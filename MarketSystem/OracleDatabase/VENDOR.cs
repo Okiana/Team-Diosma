@@ -19,8 +19,8 @@ namespace MarketSystem.OracleDatabase
             this.PRODUCTS = new HashSet<PRODUCT>();
         }
     
-        public decimal VENDOR_ID { get; set; }
-        public string VENDORNAME { get; set; }
+        public int ID { get; set; }
+        public string NAME { get; set; }
     
         public virtual ICollection<PRODUCT> PRODUCTS { get; set; }
     }

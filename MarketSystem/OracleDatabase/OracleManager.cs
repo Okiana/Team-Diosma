@@ -1,5 +1,6 @@
 ﻿namespace MarketSystem.OracleDatabase
 {
+    using System.Data.Entity;
     using System.Linq;
     using Models;
 
@@ -9,33 +10,48 @@
         {
             var context = new OracleContext();
 
-            context.PRODUCTS.OrderBy(p => p.PRODUCT_ID).ToList().ForEach(p => this.Products.Add(new Product
-            {
-                Id = (int)p.PRODUCT_ID,
-                Name = p.PRODUCTNAME,
-                Price = p.PRICE,
-                VendorId = (int)p.VENDOR_ID,
-                ProductTypeId = (int)p.TYPE_ID,
-                MeasureId = (int)p.MEASURE_ID
-            }));
+            context.MEASURES
+                .OrderBy(m => m.ID)
+                .ToList()
+                .ForEach(m => this.Measures.Add(new Measure
+                {
+                    Id = m.ID,
+                    Name = m.NAME
+                }));
 
-            context.MEASURES.OrderBy(m => m.MEASURE_ID).ToList().ForEach(m => this.Measures.Add(new Measure
-            {
-                Id = (int)m.MEASURE_ID,
-                Name = m.MEASURENAME
-            }));
+            context.PRODUCTSTYPES
+                .OrderBy(pt => pt.ID)
+                .ToList()
+                .ForEach(pt => this.ProductsTypes.Add(new ProductType
+                {
+                    Id = pt.ID,
+                    Name = pt.NAME
+                }));
 
-            context.PRODUCTSTYPES.OrderBy(pt => pt.TYPE_ID).ToList().ForEach(pt => this.ProductsTypes.Add(new ProductType
-            {
-                Id = (int)pt.TYPE_ID,
-                Name = pt.TYPENAME
-            }));
+            context.VENDORS
+                .OrderBy(v => v.ID)
+                .ToList()
+                .ForEach(v => this.Vendors.Add(new Vendor
+                {
+                    Id = v.ID,
+                    Name = v.NAME
+                }));
 
-            context.VENDORS.OrderBy(v => v.VENDOR_ID).ToList().ForEach(v => this.Vendors.Add(new Vendor
-            {
-                Id = (int)v.VENDOR_ID,
-                Name = v.VENDORNAME
-            }));
+            context.PRODUCTS
+                .OrderBy(p => p.ID)
+                .Include(p => p.VENDOR)
+                .Include(p => p.PRODUCTSTYPE)
+                .Include(p => p.MEASURE)
+                .ToList()
+                .ForEach(p => this.Products.Add(new Product
+                    {
+                        Id = p.ID,
+                        Name = p.NAME,
+                        Price = p.PRICE,
+                        VendorId = p.VENDORID,
+                        ProductTypeId = p.TYPEID,
+                        MeasureId = p.MEASUREID
+                    }));
 
             return this;
         }

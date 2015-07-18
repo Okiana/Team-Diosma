@@ -14,8 +14,6 @@
             Console.Write(data);
 
             MsSqlManager.TransferData(data);
-
-            
         }
     }
 }

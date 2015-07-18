@@ -12,11 +12,11 @@ namespace MarketSystem.OracleDatabase
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
-    
+
     public partial class OracleContext : DbContext
     {
         public OracleContext()
-            : base("name=OracleContext")
+            : base("OracleContext")
         {
         }
     

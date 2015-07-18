@@ -7,45 +7,45 @@
       <Schema Namespace="MarketSystem.OracleDatabase.Store" Provider="Oracle.ManagedDataAccess.Client" ProviderManifestToken="11.2" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="MEASURES">
           <Key>
-            <PropertyRef Name="MEASURE_ID" />
+            <PropertyRef Name="ID" />
           </Key>
-          <Property Name="MEASURE_ID" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="MEASURENAME" Type="nvarchar2" MaxLength="255" Nullable="false" />
+          <Property Name="ID" Type="number" Precision="10" Scale="0" Nullable="false" />
+          <Property Name="NAME" Type="nvarchar2" MaxLength="255" Nullable="false" />
         </EntityType>
         <EntityType Name="PRODUCTS">
           <Key>
-            <PropertyRef Name="PRODUCT_ID" />
+            <PropertyRef Name="ID" />
           </Key>
-          <Property Name="PRODUCT_ID" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="VENDOR_ID" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="PRODUCTNAME" Type="nvarchar2" MaxLength="255" Nullable="false" />
-          <Property Name="MEASURE_ID" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="TYPE_ID" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="ID" Type="number" Precision="10" Scale="0" Nullable="false" />
+          <Property Name="VENDORID" Type="number" Precision="10" Scale="0" Nullable="false" />
+          <Property Name="NAME" Type="nvarchar2" MaxLength="255" Nullable="false" />
+          <Property Name="MEASUREID" Type="number" Precision="10" Scale="0" Nullable="false" />
+          <Property Name="TYPEID" Type="number" Precision="10" Scale="0" Nullable="false" />
           <Property Name="PRICE" Type="float" Precision="126" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="PRODUCTSTYPES">
           <Key>
-            <PropertyRef Name="TYPE_ID" />
+            <PropertyRef Name="ID" />
           </Key>
-          <Property Name="TYPE_ID" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="TYPENAME" Type="nvarchar2" MaxLength="255" Nullable="false" />
+          <Property Name="ID" Type="number" Precision="10" Scale="0" Nullable="false" />
+          <Property Name="NAME" Type="nvarchar2" MaxLength="255" Nullable="false" />
         </EntityType>
         <EntityType Name="VENDORS">
           <Key>
-            <PropertyRef Name="VENDOR_ID" />
+            <PropertyRef Name="ID" />
           </Key>
-          <Property Name="VENDOR_ID" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="VENDORNAME" Type="nvarchar2" MaxLength="255" Nullable="false" />
+          <Property Name="ID" Type="number" Precision="10" Scale="0" Nullable="false" />
+          <Property Name="NAME" Type="nvarchar2" MaxLength="255" Nullable="false" />
         </EntityType>
         <Association Name="PRODUCTS_MS_FK">
           <End Role="MEASURES" Type="Self.MEASURES" Multiplicity="1" />
           <End Role="PRODUCTS" Type="Self.PRODUCTS" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="MEASURES">
-              <PropertyRef Name="MEASURE_ID" />
+              <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="PRODUCTS">
-              <PropertyRef Name="MEASURE_ID" />
+              <PropertyRef Name="MEASUREID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -54,10 +54,10 @@
           <End Role="PRODUCTS" Type="Self.PRODUCTS" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="PRODUCTSTYPES">
-              <PropertyRef Name="TYPE_ID" />
+              <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="PRODUCTS">
-              <PropertyRef Name="TYPE_ID" />
+              <PropertyRef Name="TYPEID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -66,10 +66,10 @@
           <End Role="PRODUCTS" Type="Self.PRODUCTS" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="VENDORS">
-              <PropertyRef Name="VENDOR_ID" />
+              <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="PRODUCTS">
-              <PropertyRef Name="VENDOR_ID" />
+              <PropertyRef Name="VENDORID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -98,21 +98,21 @@
       <Schema Namespace="MarketSystem.OracleDatabase" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="MEASURE">
           <Key>
-            <PropertyRef Name="MEASURE_ID" />
+            <PropertyRef Name="ID" />
           </Key>
-          <Property Name="MEASURE_ID" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="MEASURENAME" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="NAME" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="PRODUCTS" Relationship="Self.PRODUCTS_MS_FK" FromRole="MEASURES" ToRole="PRODUCTS" />
         </EntityType>
         <EntityType Name="PRODUCT">
           <Key>
-            <PropertyRef Name="PRODUCT_ID" />
+            <PropertyRef Name="ID" />
           </Key>
-          <Property Name="PRODUCT_ID" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="VENDOR_ID" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="PRODUCTNAME" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="MEASURE_ID" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="TYPE_ID" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="VENDORID" Type="Int32" Nullable="false" />
+          <Property Name="NAME" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MEASUREID" Type="Int32" Nullable="false" />
+          <Property Name="TYPEID" Type="Int32" Nullable="false" />
           <Property Name="PRICE" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <NavigationProperty Name="MEASURE" Relationship="Self.PRODUCTS_MS_FK" FromRole="PRODUCTS" ToRole="MEASURES" />
           <NavigationProperty Name="PRODUCTSTYPE" Relationship="Self.PRODUCTS_TPS_FK" FromRole="PRODUCTS" ToRole="PRODUCTSTYPES" />
@@ -120,18 +120,18 @@
         </EntityType>
         <EntityType Name="PRODUCTSTYPE">
           <Key>
-            <PropertyRef Name="TYPE_ID" />
+            <PropertyRef Name="ID" />
           </Key>
-          <Property Name="TYPE_ID" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="TYPENAME" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="NAME" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="PRODUCTS" Relationship="Self.PRODUCTS_TPS_FK" FromRole="PRODUCTSTYPES" ToRole="PRODUCTS" />
         </EntityType>
         <EntityType Name="VENDOR">
           <Key>
-            <PropertyRef Name="VENDOR_ID" />
+            <PropertyRef Name="ID" />
           </Key>
-          <Property Name="VENDOR_ID" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="VENDORNAME" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="NAME" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="PRODUCTS" Relationship="Self.PRODUCTS_VD_FK" FromRole="VENDORS" ToRole="PRODUCTS" />
         </EntityType>
         <Association Name="PRODUCTS_MS_FK">
@@ -139,10 +139,10 @@
           <End Role="PRODUCTS" Type="Self.PRODUCT" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="MEASURES">
-              <PropertyRef Name="MEASURE_ID" />
+              <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="PRODUCTS">
-              <PropertyRef Name="MEASURE_ID" />
+              <PropertyRef Name="MEASUREID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -151,10 +151,10 @@
           <End Role="PRODUCTS" Type="Self.PRODUCT" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="PRODUCTSTYPES">
-              <PropertyRef Name="TYPE_ID" />
+              <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="PRODUCTS">
-              <PropertyRef Name="TYPE_ID" />
+              <PropertyRef Name="TYPEID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -163,10 +163,10 @@
           <End Role="PRODUCTS" Type="Self.PRODUCT" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="VENDORS">
-              <PropertyRef Name="VENDOR_ID" />
+              <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="PRODUCTS">
-              <PropertyRef Name="VENDOR_ID" />
+              <PropertyRef Name="VENDORID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -197,19 +197,19 @@
           <EntitySetMapping Name="MEASURES">
             <EntityTypeMapping TypeName="MarketSystem.OracleDatabase.MEASURE">
               <MappingFragment StoreEntitySet="MEASURES">
-                <ScalarProperty Name="MEASURE_ID" ColumnName="MEASURE_ID" />
-                <ScalarProperty Name="MEASURENAME" ColumnName="MEASURENAME" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="NAME" ColumnName="NAME" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="PRODUCTS">
             <EntityTypeMapping TypeName="MarketSystem.OracleDatabase.PRODUCT">
               <MappingFragment StoreEntitySet="PRODUCTS">
-                <ScalarProperty Name="PRODUCT_ID" ColumnName="PRODUCT_ID" />
-                <ScalarProperty Name="VENDOR_ID" ColumnName="VENDOR_ID" />
-                <ScalarProperty Name="PRODUCTNAME" ColumnName="PRODUCTNAME" />
-                <ScalarProperty Name="MEASURE_ID" ColumnName="MEASURE_ID" />
-                <ScalarProperty Name="TYPE_ID" ColumnName="TYPE_ID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="VENDORID" ColumnName="VENDORID" />
+                <ScalarProperty Name="NAME" ColumnName="NAME" />
+                <ScalarProperty Name="MEASUREID" ColumnName="MEASUREID" />
+                <ScalarProperty Name="TYPEID" ColumnName="TYPEID" />
                 <ScalarProperty Name="PRICE" ColumnName="PRICE" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -217,16 +217,16 @@
           <EntitySetMapping Name="PRODUCTSTYPES">
             <EntityTypeMapping TypeName="MarketSystem.OracleDatabase.PRODUCTSTYPE">
               <MappingFragment StoreEntitySet="PRODUCTSTYPES">
-                <ScalarProperty Name="TYPE_ID" ColumnName="TYPE_ID" />
-                <ScalarProperty Name="TYPENAME" ColumnName="TYPENAME" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="NAME" ColumnName="NAME" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="VENDORS">
             <EntityTypeMapping TypeName="MarketSystem.OracleDatabase.VENDOR">
               <MappingFragment StoreEntitySet="VENDORS">
-                <ScalarProperty Name="VENDOR_ID" ColumnName="VENDOR_ID" />
-                <ScalarProperty Name="VENDORNAME" ColumnName="VENDORNAME" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="NAME" ColumnName="NAME" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

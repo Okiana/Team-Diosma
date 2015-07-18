@@ -14,11 +14,11 @@ namespace MarketSystem.OracleDatabase
     
     public partial class PRODUCT
     {
-        public decimal PRODUCT_ID { get; set; }
-        public decimal VENDOR_ID { get; set; }
-        public string PRODUCTNAME { get; set; }
-        public decimal MEASURE_ID { get; set; }
-        public decimal TYPE_ID { get; set; }
+        public int ID { get; set; }
+        public int VENDORID { get; set; }
+        public string NAME { get; set; }
+        public int MEASUREID { get; set; }
+        public int TYPEID { get; set; }
         public decimal PRICE { get; set; }
     
         public virtual MEASURE MEASURE { get; set; }
