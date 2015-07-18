@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="c1a30f71dceb47b8a22259522318868c" Name="Diagram1">
+        <EntityTypeShape EntityType="MarketSystem.OracleDatabase.MEASURE" Width="1.5" PointX="0.75" PointY="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="MarketSystem.OracleDatabase.PRODUCT" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="MarketSystem.OracleDatabase.PRODUCTSTYPE" Width="1.5" PointX="0.75" PointY="4.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="MarketSystem.OracleDatabase.VENDOR" Width="1.5" PointX="0.75" PointY="7" IsExpanded="true" />
+        <AssociationConnector Association="MarketSystem.OracleDatabase.PRODUCTS_MS_FK" ManuallyRouted="false" />
+        <AssociationConnector Association="MarketSystem.OracleDatabase.PRODUCTS_TPS_FK" ManuallyRouted="false" />
+        <AssociationConnector Association="MarketSystem.OracleDatabase.PRODUCTS_VD_FK" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

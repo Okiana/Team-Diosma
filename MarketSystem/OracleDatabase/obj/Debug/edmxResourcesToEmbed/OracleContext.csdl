@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="MarketSystem.OracleDatabase" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="MEASURE">
+    <Key>
+      <PropertyRef Name="MEASURE_ID" />
+    </Key>
+    <Property Name="MEASURE_ID" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+    <Property Name="MEASURENAME" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="PRODUCTS" Relationship="Self.PRODUCTS_MS_FK" FromRole="MEASURES" ToRole="PRODUCTS" />
+  </EntityType>
+  <EntityType Name="PRODUCT">
+    <Key>
+      <PropertyRef Name="PRODUCT_ID" />
+    </Key>
+    <Property Name="PRODUCT_ID" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+    <Property Name="VENDOR_ID" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+    <Property Name="PRODUCTNAME" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="MEASURE_ID" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+    <Property Name="TYPE_ID" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+    <Property Name="PRICE" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+    <NavigationProperty Name="MEASURE" Relationship="Self.PRODUCTS_MS_FK" FromRole="PRODUCTS" ToRole="MEASURES" />
+    <NavigationProperty Name="PRODUCTSTYPE" Relationship="Self.PRODUCTS_TPS_FK" FromRole="PRODUCTS" ToRole="PRODUCTSTYPES" />
+    <NavigationProperty Name="VENDOR" Relationship="Self.PRODUCTS_VD_FK" FromRole="PRODUCTS" ToRole="VENDORS" />
+  </EntityType>
+  <EntityType Name="PRODUCTSTYPE">
+    <Key>
+      <PropertyRef Name="TYPE_ID" />
+    </Key>
+    <Property Name="TYPE_ID" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+    <Property Name="TYPENAME" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="PRODUCTS" Relationship="Self.PRODUCTS_TPS_FK" FromRole="PRODUCTSTYPES" ToRole="PRODUCTS" />
+  </EntityType>
+  <EntityType Name="VENDOR">
+    <Key>
+      <PropertyRef Name="VENDOR_ID" />
+    </Key>
+    <Property Name="VENDOR_ID" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+    <Property Name="VENDORNAME" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="PRODUCTS" Relationship="Self.PRODUCTS_VD_FK" FromRole="VENDORS" ToRole="PRODUCTS" />
+  </EntityType>
+  <Association Name="PRODUCTS_MS_FK">
+    <End Role="MEASURES" Type="Self.MEASURE" Multiplicity="1" />
+    <End Role="PRODUCTS" Type="Self.PRODUCT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="MEASURES">
+        <PropertyRef Name="MEASURE_ID" />
+      </Principal>
+      <Dependent Role="PRODUCTS">
+        <PropertyRef Name="MEASURE_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="PRODUCTS_TPS_FK">
+    <End Role="PRODUCTSTYPES" Type="Self.PRODUCTSTYPE" Multiplicity="1" />
+    <End Role="PRODUCTS" Type="Self.PRODUCT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PRODUCTSTYPES">
+        <PropertyRef Name="TYPE_ID" />
+      </Principal>
+      <Dependent Role="PRODUCTS">
+        <PropertyRef Name="TYPE_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="PRODUCTS_VD_FK">
+    <End Role="VENDORS" Type="Self.VENDOR" Multiplicity="1" />
+    <End Role="PRODUCTS" Type="Self.PRODUCT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="VENDORS">
+        <PropertyRef Name="VENDOR_ID" />
+      </Principal>
+      <Dependent Role="PRODUCTS">
+        <PropertyRef Name="VENDOR_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="OracleContext" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="MEASURES" EntityType="Self.MEASURE" />
+    <EntitySet Name="PRODUCTS" EntityType="Self.PRODUCT" />
+    <EntitySet Name="PRODUCTSTYPES" EntityType="Self.PRODUCTSTYPE" />
+    <EntitySet Name="VENDORS" EntityType="Self.VENDOR" />
+    <AssociationSet Name="PRODUCTS_MS_FK" Association="Self.PRODUCTS_MS_FK">
+      <End Role="MEASURES" EntitySet="MEASURES" />
+      <End Role="PRODUCTS" EntitySet="PRODUCTS" />
+    </AssociationSet>
+    <AssociationSet Name="PRODUCTS_TPS_FK" Association="Self.PRODUCTS_TPS_FK">
+      <End Role="PRODUCTSTYPES" EntitySet="PRODUCTSTYPES" />
+      <End Role="PRODUCTS" EntitySet="PRODUCTS" />
+    </AssociationSet>
+    <AssociationSet Name="PRODUCTS_VD_FK" Association="Self.PRODUCTS_VD_FK">
+      <End Role="VENDORS" EntitySet="VENDORS" />
+      <End Role="PRODUCTS" EntitySet="PRODUCTS" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarketSystem.Models", "MarketSystem.Models\MarketSystem.Models.csproj", "{FAD5FDBF-D2A6-4B59-BA8F-9C6DEE5DA042}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarketSystem.ConsoleClient", "MarketSystem.ConsoleClient\MarketSystem.ConsoleClient.csproj", "{2C2E5E11-872D-44EA-9756-25AE2126BC6D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MsSqlDatabase", "MsSqlDatabase\MsSqlDatabase.csproj", "{BD7654A1-22C4-40F4-9AC4-CE151C0897C9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OracleDatabase", "OracleDatabase\OracleDatabase.csproj", "{80AD98CB-53C2-4D6A-8929-E5A7BA904AB7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FAD5FDBF-D2A6-4B59-BA8F-9C6DEE5DA042}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FAD5FDBF-D2A6-4B59-BA8F-9C6DEE5DA042}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FAD5FDBF-D2A6-4B59-BA8F-9C6DEE5DA042}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FAD5FDBF-D2A6-4B59-BA8F-9C6DEE5DA042}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C2E5E11-872D-44EA-9756-25AE2126BC6D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C2E5E11-872D-44EA-9756-25AE2126BC6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C2E5E11-872D-44EA-9756-25AE2126BC6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C2E5E11-872D-44EA-9756-25AE2126BC6D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD7654A1-22C4-40F4-9AC4-CE151C0897C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD7654A1-22C4-40F4-9AC4-CE151C0897C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD7654A1-22C4-40F4-9AC4-CE151C0897C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD7654A1-22C4-40F4-9AC4-CE151C0897C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80AD98CB-53C2-4D6A-8929-E5A7BA904AB7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80AD98CB-53C2-4D6A-8929-E5A7BA904AB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80AD98CB-53C2-4D6A-8929-E5A7BA904AB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80AD98CB-53C2-4D6A-8929-E5A7BA904AB7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

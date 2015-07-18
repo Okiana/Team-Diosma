@@ -1,0 +1,5 @@
+D:\SoftUni\Level 3\02. Database Applications(July 2015)\MarketSystem\MarketSystem.Models\bin\Debug\MarketSystem.Data.dll
+D:\SoftUni\Level 3\02. Database Applications(July 2015)\MarketSystem\MarketSystem.Models\bin\Debug\MarketSystem.Data.pdb
+D:\SoftUni\Level 3\02. Database Applications(July 2015)\MarketSystem\MarketSystem.Models\obj\Debug\MarketSystem.Data.dll
+D:\SoftUni\Level 3\02. Database Applications(July 2015)\MarketSystem\MarketSystem.Models\obj\Debug\MarketSystem.Data.pdb
+D:\SoftUni\Level 3\02. Database Applications(July 2015)\MarketSystem\MarketSystem.Models\obj\Debug\MarketSystem.Models.csprojResolveAssemblyReference.cache

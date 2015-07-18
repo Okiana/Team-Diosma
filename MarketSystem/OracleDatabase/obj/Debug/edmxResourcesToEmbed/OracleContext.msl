@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="MarketSystemOracleDatabaseStoreContainer" CdmEntityContainer="OracleContext">
+    <EntitySetMapping Name="MEASURES">
+      <EntityTypeMapping TypeName="MarketSystem.OracleDatabase.MEASURE">
+        <MappingFragment StoreEntitySet="MEASURES">
+          <ScalarProperty Name="MEASURE_ID" ColumnName="MEASURE_ID" />
+          <ScalarProperty Name="MEASURENAME" ColumnName="MEASURENAME" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PRODUCTS">
+      <EntityTypeMapping TypeName="MarketSystem.OracleDatabase.PRODUCT">
+        <MappingFragment StoreEntitySet="PRODUCTS">
+          <ScalarProperty Name="PRODUCT_ID" ColumnName="PRODUCT_ID" />
+          <ScalarProperty Name="VENDOR_ID" ColumnName="VENDOR_ID" />
+          <ScalarProperty Name="PRODUCTNAME" ColumnName="PRODUCTNAME" />
+          <ScalarProperty Name="MEASURE_ID" ColumnName="MEASURE_ID" />
+          <ScalarProperty Name="TYPE_ID" ColumnName="TYPE_ID" />
+          <ScalarProperty Name="PRICE" ColumnName="PRICE" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PRODUCTSTYPES">
+      <EntityTypeMapping TypeName="MarketSystem.OracleDatabase.PRODUCTSTYPE">
+        <MappingFragment StoreEntitySet="PRODUCTSTYPES">
+          <ScalarProperty Name="TYPE_ID" ColumnName="TYPE_ID" />
+          <ScalarProperty Name="TYPENAME" ColumnName="TYPENAME" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="VENDORS">
+      <EntityTypeMapping TypeName="MarketSystem.OracleDatabase.VENDOR">
+        <MappingFragment StoreEntitySet="VENDORS">
+          <ScalarProperty Name="VENDOR_ID" ColumnName="VENDOR_ID" />
+          <ScalarProperty Name="VENDORNAME" ColumnName="VENDORNAME" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>
