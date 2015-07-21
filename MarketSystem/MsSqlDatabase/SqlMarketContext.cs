@@ -16,5 +16,7 @@ namespace MarketSystem.MsSqlDatabase
         public virtual DbSet<ProductType> ProductsTypes { get; set; }
         public virtual DbSet<Vendor> Vendors { get; set; }
         public virtual DbSet<Measure> Measures { get; set; }
+
+        public virtual DbSet<VendorExpense> VendorExpenses { get; set; }
     }
 }

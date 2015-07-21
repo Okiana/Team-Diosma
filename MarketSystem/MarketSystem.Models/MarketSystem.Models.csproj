@@ -57,6 +57,7 @@
     <Compile Include="ProductType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Vendor.cs" />
+    <Compile Include="VendorExpense.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
