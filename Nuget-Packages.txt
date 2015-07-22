@@ -1,1 +1,6 @@
 DotNetZip - Install-Package DotNetZip
+Entity Framework - Install-Package EntityFramework
+
+Oracle Data Access Driver - Install-Package Oracle.ManagedDataAccess
+Oracle Entity Framework - Install-Package Oracle.ManagedDataAccess.EntityFramework 
+Gembox.Spreadsheet - Install-Package GemBox.Spreadsheet
