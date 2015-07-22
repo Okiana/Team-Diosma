@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'D:\SoftUni\Level 3\02. Database Applications(July 2015)\MarketSystem\OracleDatabase\OracleContext.edmx'. 
+﻿// T4 code generation is enabled for model 'D:\Team-Diosma\MarketSystem\OracleDatabase\OracleContext.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.

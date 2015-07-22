@@ -40,6 +40,12 @@
     <Reference Include="EntityFramework.SqlServer">
       <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="GemBox.Spreadsheet">
+      <HintPath>..\packages\GemBox.Spreadsheet.39.3.30.1077\lib\net30\GemBox.Spreadsheet.dll</HintPath>
+    </Reference>
+    <Reference Include="Ionic.Zip">
+      <HintPath>..\packages\DotNetZip.1.9.3\lib\net20\Ionic.Zip.dll</HintPath>
+    </Reference>
     <Reference Include="Oracle.ManagedDataAccess, Version=4.121.2.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\Oracle.ManagedDataAccess.12.1.022\lib\net40\Oracle.ManagedDataAccess.dll</HintPath>
@@ -65,6 +71,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\MarketSystem.Engine\MarketSystem.Engine.csproj">
+      <Project>{4ab5135d-cc5b-4821-8ee7-0468bf95b5a9}</Project>
+      <Name>MarketSystem.Engine</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MarketSystem.Models\MarketSystem.Models.csproj">
       <Project>{fad5fdbf-d2a6-4b59-ba8f-9c6dee5da042}</Project>
       <Name>MarketSystem.Models</Name>
@@ -76,6 +86,10 @@
     <ProjectReference Include="..\OracleDatabase\OracleDatabase.csproj">
       <Project>{7517bcf0-0b1d-44f1-af58-f8ffe51976a2}</Project>
       <Name>OracleDatabase</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ZipExtractor\ZipExtractor.csproj">
+      <Project>{11fc2072-886c-4f6d-b9b6-fe341cf27de5}</Project>
+      <Name>ZipExtractor</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

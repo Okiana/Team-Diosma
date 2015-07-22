@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="MarketSystem.OracleDatabase.Store" Provider="Oracle.ManagedDataAccess.Client" ProviderManifestToken="11.2" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="MarketSystem.OracleDatabase.Store" Provider="Oracle.ManagedDataAccess.Client" ProviderManifestToken="11.2" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="MEASURES">
           <Key>
             <PropertyRef Name="ID" />
@@ -24,6 +24,21 @@
           <Property Name="PRICE" Type="float" Precision="126" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="PRODUCTSTYPES">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="number" Precision="10" Scale="0" Nullable="false" />
+          <Property Name="NAME" Type="nvarchar2" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SUPERMARKETS">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="number" Precision="10" Scale="0" Nullable="false" />
+          <Property Name="NAME" Type="nvarchar2" MaxLength="255" Nullable="false" />
+          <Property Name="TOWNID" Type="number" Precision="10" Scale="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TOWNS">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
@@ -73,10 +88,24 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="SUPERMARKETS_TS_FK">
+          <End Role="TOWNS" Type="Self.TOWNS" Multiplicity="1" />
+          <End Role="SUPERMARKETS" Type="Self.SUPERMARKETS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TOWNS">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="SUPERMARKETS">
+              <PropertyRef Name="TOWNID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="MarketSystemOracleDatabaseStoreContainer">
           <EntitySet Name="MEASURES" EntityType="Self.MEASURES" Schema="DIOSMA" store:Type="Tables" />
           <EntitySet Name="PRODUCTS" EntityType="Self.PRODUCTS" Schema="DIOSMA" store:Type="Tables" />
           <EntitySet Name="PRODUCTSTYPES" EntityType="Self.PRODUCTSTYPES" Schema="DIOSMA" store:Type="Tables" />
+          <EntitySet Name="SUPERMARKETS" EntityType="Self.SUPERMARKETS" Schema="DIOSMA" store:Type="Tables" />
+          <EntitySet Name="TOWNS" EntityType="Self.TOWNS" Schema="DIOSMA" store:Type="Tables" />
           <EntitySet Name="VENDORS" EntityType="Self.VENDORS" Schema="DIOSMA" store:Type="Tables" />
           <AssociationSet Name="PRODUCTS_MS_FK" Association="Self.PRODUCTS_MS_FK">
             <End Role="MEASURES" EntitySet="MEASURES" />
@@ -90,9 +119,12 @@
             <End Role="VENDORS" EntitySet="VENDORS" />
             <End Role="PRODUCTS" EntitySet="PRODUCTS" />
           </AssociationSet>
+          <AssociationSet Name="SUPERMARKETS_TS_FK" Association="Self.SUPERMARKETS_TS_FK">
+            <End Role="TOWNS" EntitySet="TOWNS" />
+            <End Role="SUPERMARKETS" EntitySet="SUPERMARKETS" />
+          </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="MarketSystem.OracleDatabase" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -187,7 +219,42 @@
             <End Role="VENDORS" EntitySet="VENDORS" />
             <End Role="PRODUCTS" EntitySet="PRODUCTS" />
           </AssociationSet>
+          <EntitySet Name="SUPERMARKETS" EntityType="MarketSystem.OracleDatabase.SUPERMARKET" />
+          <EntitySet Name="TOWNS" EntityType="MarketSystem.OracleDatabase.TOWN" />
+          <AssociationSet Name="SUPERMARKETS_TS_FK" Association="MarketSystem.OracleDatabase.SUPERMARKETS_TS_FK">
+            <End Role="TOWN" EntitySet="TOWNS" />
+            <End Role="SUPERMARKET" EntitySet="SUPERMARKETS" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="SUPERMARKET">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="NAME" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="TOWNID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="TOWN" Relationship="MarketSystem.OracleDatabase.SUPERMARKETS_TS_FK" FromRole="SUPERMARKET" ToRole="TOWN" />
+        </EntityType>
+        <EntityType Name="TOWN">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="NAME" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="SUPERMARKETS" Relationship="MarketSystem.OracleDatabase.SUPERMARKETS_TS_FK" FromRole="TOWN" ToRole="SUPERMARKET" />
+        </EntityType>
+        <Association Name="SUPERMARKETS_TS_FK">
+          <End Type="MarketSystem.OracleDatabase.TOWN" Role="TOWN" Multiplicity="1" />
+          <End Type="MarketSystem.OracleDatabase.SUPERMARKET" Role="SUPERMARKET" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TOWN">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="SUPERMARKET">
+              <PropertyRef Name="TOWNID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -227,6 +294,23 @@
               <MappingFragment StoreEntitySet="VENDORS">
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="NAME" ColumnName="NAME" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SUPERMARKETS">
+            <EntityTypeMapping TypeName="MarketSystem.OracleDatabase.SUPERMARKET">
+              <MappingFragment StoreEntitySet="SUPERMARKETS">
+                <ScalarProperty Name="TOWNID" ColumnName="TOWNID" />
+                <ScalarProperty Name="NAME" ColumnName="NAME" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TOWNS">
+            <EntityTypeMapping TypeName="MarketSystem.OracleDatabase.TOWN">
+              <MappingFragment StoreEntitySet="TOWNS">
+                <ScalarProperty Name="NAME" ColumnName="NAME" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

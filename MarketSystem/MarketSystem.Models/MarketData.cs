@@ -14,6 +14,10 @@
             this.ProductsTypes = new HashSet<ProductType>();
             this.Vendors = new HashSet<Vendor>();
             this.Measures = new HashSet<Measure>();
+            this.Supermarkets = new HashSet<Supermarket>();
+            this.Towns = new HashSet<Town>();
+            this.SalesReports = new HashSet<SalesReport>();
+            this.VendorExpenses = new HashSet<VendorExpense>();
         }
 
         public ICollection<Product> Products { get; private set; }
@@ -24,9 +28,29 @@
 
         public ICollection<Measure> Measures { get; private set; }
 
+        public ICollection<Supermarket> Supermarkets { get; private set; }
+
+        public ICollection<Town> Towns { get; private set; }
+
+        public ICollection<SalesReport> SalesReports { get; private set; }
+
+        public ICollection<VendorExpense> VendorExpenses { get; private set; }
+
         public override string ToString()
         {
             var output = new StringBuilder();
+
+            if (this.Towns.Any())
+            {
+                Console.WriteLine("====================================={0}Towns:{0}=====================================", Environment.NewLine);
+                Console.WriteLine(string.Join("-------------------------------------\n", this.Towns));
+            }
+
+            if (this.Supermarkets.Any())
+            {
+                Console.WriteLine("====================================={0}Supermarkets:{0}=====================================", Environment.NewLine);
+                Console.WriteLine(string.Join("-------------------------------------\n", this.Supermarkets));
+            }
 
             if (this.Products.Any())
             {

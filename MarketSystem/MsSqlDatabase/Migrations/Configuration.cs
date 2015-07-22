@@ -6,9 +6,9 @@ namespace MarketSystem.MsSqlDatabase.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationDataLossAllowed = true; //disable it for production!!!
-            AutomaticMigrationsEnabled = true;
-            ContextKey = "MarketSystem.MsSqlDatabase.SqlMarketContext";
+            this.AutomaticMigrationDataLossAllowed = true; //disable it for production!!!
+            this.AutomaticMigrationsEnabled = true;
+            this.ContextKey = "MarketSystem.MsSqlDatabase.SqlMarketContext";
         }
 
         protected override void Seed(MarketSystem.MsSqlDatabase.SqlMarketContext context)

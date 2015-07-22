@@ -1,69 +1,44 @@
-﻿using System.Globalization;
-using System.Linq;
-using System.Threading;
-using System.Xml.Linq;
-using MarketSystem.Models;
-
-namespace MarketSystem.ConsoleClient
+﻿namespace MarketSystem.ConsoleClient
 {
     using System;
-    using MsSqlDatabase;
-    using OracleDatabase;
+    using System.Globalization;
+    using System.Threading;
+    using Engine;
 
     class ConsoleClient
     {
         public static void Main()
         {
-            //var oracleManager = new OracleManager();
-            //var data = oracleManager.GetData();
-
-            //Console.Write(data);
-
-            //MsSqlManager.TransferData(data);
-            var context = new SqlMarketContext();
-            Console.WriteLine(context.VendorExpenses.Count());
-
-
-            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture; ;
-           
-
-            var xmlDoc = XDocument.Load("../../Sample-Vendor-Expenses.xml");
-            var vendorNamesList = xmlDoc.Root.Elements("vendor");
-
-            foreach (var vendorElement in vendorNamesList)
+            try
             {
+                Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
                 
+                const string menu = "Menu:\n" +
+                    "1. Transfer data from Oracle Database to MsSql Database\n" +
+                    "2. Load Zip Excel Reports to MsSql Database\n" + 
+                    "6. Load Xml Vendors Expenses Report to MsSql Database\n" +
+                    "0. Exit\n";
 
-                var vendorName = vendorElement.Attribute("name").Value;
-                var vendorId = context.Vendors.Where(u => u.Name == vendorName).Select(u => u.Id).FirstOrDefault();
+                Console.WriteLine(menu);
+                var menuChoise = int.Parse(Console.ReadLine());
 
-
-
-                var monthExpenses = vendorElement.Elements("expenses");
-                foreach (var monthExpense in monthExpenses)
+                switch (menuChoise)
                 {
-
-                    var dt = monthExpense.Attribute("month").Value;
-                    var parsedDatetime = DateTime.Parse(dt);
-                   
-                    //Console.WriteLine(parsedDate);
-                    //System.Console.WriteLine(parsedDate);
-                    var expense = monthExpense.Value;
-                    //System.Console.WriteLine("month: {0} - {1}", month, expense);
-                    //System.Console.WriteLine(month);
-
-                    var vendorExpense = new VendorExpense();
-                    vendorExpense.VendorId = vendorId;
-                    vendorExpense.Month =parsedDatetime;
-                    //System.Console.WriteLine(DateTime.Parse(month));
-                    vendorExpense.Expenses = decimal.Parse(expense);
-
-                    context.VendorExpenses.Add(vendorExpense);
-
+                    case 0: break;
+                    case 1: Engine.OracleToMsSqlTransfer();
+                        break;
+                    case 2: Engine.ZipExcelReportsToMsSql();
+                        break;
+                    case 6: Engine.XmlExpensesReportToMsSql();
+                        break;
+                    default: throw new InvalidOperationException("Invalid operation.");
+                        break;
                 }
-
             }
-            context.SaveChanges();
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
         }
     }
 }

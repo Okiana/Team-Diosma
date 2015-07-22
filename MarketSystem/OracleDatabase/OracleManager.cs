@@ -1,6 +1,5 @@
 ﻿namespace MarketSystem.OracleDatabase
 {
-    using System.Data.Entity;
     using System.Linq;
     using Models;
 
@@ -9,6 +8,25 @@
         public MarketData GetData()
         {
             var context = new OracleContext();
+
+            context.TOWNS
+                .OrderBy(t => t.ID)
+                .ToList()
+                .ForEach(t => this.Towns.Add(new Town
+                {
+                    Id = t.ID,
+                    Name = t.NAME
+                }));
+
+            context.SUPERMARKETS
+                .OrderBy(s => s.ID)
+                .ToList()
+                .ForEach(s => this.Supermarkets.Add(new Supermarket
+                {
+                    Id = s.ID,
+                    Name = s.NAME,
+                    TownId = s.TOWNID
+                }));
 
             context.MEASURES
                 .OrderBy(m => m.ID)
@@ -39,9 +57,6 @@
 
             context.PRODUCTS
                 .OrderBy(p => p.ID)
-                .Include(p => p.VENDOR)
-                .Include(p => p.PRODUCTSTYPE)
-                .Include(p => p.MEASURE)
                 .ToList()
                 .ForEach(p => this.Products.Add(new Product
                     {

@@ -12,6 +12,6 @@
 
         public virtual ICollection<Product> Products { get; set; }
 
-        public HashSet<VendorExpense> VendorExpenses { get; set; }
+        public virtual ICollection<VendorExpense> VendorExpenses { get; set; }
     }
 }

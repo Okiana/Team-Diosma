@@ -12,6 +12,9 @@
         <AssociationConnector Association="MarketSystem.OracleDatabase.PRODUCTS_MS_FK" ManuallyRouted="false" />
         <AssociationConnector Association="MarketSystem.OracleDatabase.PRODUCTS_TPS_FK" ManuallyRouted="false" />
         <AssociationConnector Association="MarketSystem.OracleDatabase.PRODUCTS_VD_FK" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="MarketSystem.OracleDatabase.SUPERMARKET" Width="1.5" PointX="5.625" PointY="4.875" />
+        <EntityTypeShape EntityType="MarketSystem.OracleDatabase.TOWN" Width="1.5" PointX="3.375" PointY="5" />
+        <AssociationConnector Association="MarketSystem.OracleDatabase.SUPERMARKETS_TS_FK" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

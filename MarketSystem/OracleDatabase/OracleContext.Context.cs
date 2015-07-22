@@ -12,11 +12,11 @@ namespace MarketSystem.OracleDatabase
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
-
+    
     public partial class OracleContext : DbContext
     {
         public OracleContext()
-            : base("OracleContext")
+            : base("name=OracleContext")
         {
         }
     
@@ -29,5 +29,7 @@ namespace MarketSystem.OracleDatabase
         public virtual DbSet<PRODUCT> PRODUCTS { get; set; }
         public virtual DbSet<PRODUCTSTYPE> PRODUCTSTYPES { get; set; }
         public virtual DbSet<VENDOR> VENDORS { get; set; }
+        public virtual DbSet<SUPERMARKET> SUPERMARKETS { get; set; }
+        public virtual DbSet<TOWN> TOWNS { get; set; }
     }
 }
