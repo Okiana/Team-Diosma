@@ -1,8 +1,8 @@
 ﻿namespace ZipExtractor
 {
     using System;
+    using System.IO;
     using System.Linq;
-    using System.Text;
     using GemBox.Spreadsheet;
     using Ionic.Zip;
     using MarketSystem.Models;
@@ -24,8 +24,12 @@
 
         public MarketData ExtractData()
         {
+            this.DeleteTempFolder();
+
             using (ZipFile zip = ZipFile.Read(this.ArchivePath))
             {
+                zip.ExtractAll(TargetDirectory);
+
                 var selection = zip.Entries
                     .Where(e => e.FileName.EndsWith(".xls"))
                     .Select(e => e);
@@ -37,20 +41,12 @@
                     ExcelFile ef = ExcelFile.Load(TargetDirectory + report.FileName);
 
                     var date = DateTime.Parse(report.FileName.Substring(0, 11));
-
-                    //StringBuilder sb = new StringBuilder();
-
+                    
                     foreach (ExcelWorksheet sheet in ef.Worksheets)
                     {
                         Console.WriteLine(report.FileName);
 
-                        //sb.AppendLine();
-                        //sb.AppendFormat("--------- {0} ---------", sheet.Name);
-
                         var supermarket = sheet.Rows[1].AllocatedCells[1].Value.ToString();
-                        
-
-                        //sb.AppendFormat("{0}{1}{0}", Environment.NewLine, supermarket);
 
                         for (var i = 3; i < sheet.Rows.Count - 1; i++)
                         {
@@ -58,9 +54,6 @@
                             var quantity = int.Parse(sheet.Rows[i].AllocatedCells[2].Value.ToString());
                             var unitPrice = decimal.Parse(sheet.Rows[i].AllocatedCells[3].Value.ToString());
                             var totalSum = decimal.Parse(sheet.Rows[i].AllocatedCells[4].Value.ToString());
-
-                            //sb.AppendFormat("{0}\t{1}\t{2:F2}\t{3:F2}{4}", product, quantity, unitPrice, totalSum,
-                            //    Environment.NewLine);
 
                             var dbSupermarket =
                                 this.SqlMarketContext.Supermarkets.FirstOrDefault(s => s.Name == supermarket);
@@ -82,13 +75,21 @@
                                 this.SalesReports.Add(salesReport);
                             }
                         }
-
-                        //Console.WriteLine(sb);
                     }
                 }
             }
 
+            this.DeleteTempFolder();
+
             return this;
         }
+
+        public void DeleteTempFolder()
+        {
+            if (Directory.Exists(TargetDirectory))
+            {
+                Directory.Delete(TargetDirectory, true);
+            }
+        } 
     }
 }
