@@ -1,5 +1,5 @@
 .gitattributes
-App.config
+
 bin/
 obj/
 packages/
