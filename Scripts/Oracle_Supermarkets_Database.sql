@@ -79,7 +79,6 @@ INCREMENT BY 1
 MINVALUE 1
 MAXVALUE 1000000;
 
-
 CREATE TABLE VENDORS
 (
 Id DECIMAL(10, 0) NOT NULL,
@@ -93,7 +92,6 @@ START WITH 1
 INCREMENT BY 1
 MINVALUE 1
 MAXVALUE 1000000;
-
 
 CREATE TABLE PRODUCTSTYPES
 (
@@ -109,9 +107,6 @@ INCREMENT BY 1
 MINVALUE 1
 MAXVALUE 1000000;
 
-
-
-
 CREATE TABLE PRODUCTS
 (
 Id DECIMAL(10, 0) NOT NULL ,
@@ -119,10 +114,9 @@ VendorId DECIMAL(10, 0) NOT NULL,
 Name nvarchar2(255) NOT NULL,
 MeasureId DECIMAL(10, 0) NOT NULL,
 TypeId DECIMAL(10, 0) NOT NULL,
-Price DOUBLE NOT NULL,
+Price FLOAT NOT NULL,
 CONSTRAINT PK_PRODUCTS PRIMARY KEY (Id)
 );
-
 
 -- This makes auto-increment sequence for primary key in table "Products"
 CREATE SEQUENCE products_sequence
@@ -130,7 +124,6 @@ START WITH 1
 INCREMENT BY 1
 MINVALUE 1
 MAXVALUE 1000000;
-
 
 --Add foreign key constraints in table "Products"
 ALTER TABLE PRODUCTS ADD CONSTRAINT products_ms_fk FOREIGN KEY 
@@ -142,38 +135,24 @@ ALTER TABLE PRODUCTS ADD CONSTRAINT products_vd_fk FOREIGN KEY
 ALTER TABLE PRODUCTS ADD CONSTRAINT products_tps_fk FOREIGN KEY 
 (TypeId) REFERENCES PRODUCTSTYPES(Id);
 
-
 --Insert some data
-
-insert into TOWNS(Id, Name)
-values (towns_sequence.NEXTVAL,'Sofia');
-insert into TOWNS(Id, Name)
-values (towns_sequence.NEXTVAL,'Varna');
-insert into TOWNS(Id, Name)
-values (towns_sequence.NEXTVAL,'Bourgas');
 insert into TOWNS(Id, Name)
 values (towns_sequence.NEXTVAL,'Plovdiv');
 insert into TOWNS(Id, Name)
 values (towns_sequence.NEXTVAL,'Kaspichan');
 insert into TOWNS(Id, Name)
-values (towns_sequence.NEXTVAL,'Rouse');
+values (towns_sequence.NEXTVAL,'Bourgas');
+insert into TOWNS(Id, Name)
+values (towns_sequence.NEXTVAL,'Zmeyovo');
 
 insert into SUPERMARKETS(Id, Name, TownId)
-values (supermarkets_sequence.NEXTVAL, 'Billa Sofia', 1);
+values (supermarkets_sequence.NEXTVAL, 'Supermarket "Plovdiv - Stolipinovo"', 1);
 insert into SUPERMARKETS(Id, Name, TownId)
-values (supermarkets_sequence.NEXTVAL, 'Billa Bourgas', 3);
+values (supermarkets_sequence.NEXTVAL, 'Supermarket "Kaspichan - Center"', 2);
 insert into SUPERMARKETS(Id, Name, TownId)
-values (supermarkets_sequence.NEXTVAL, 'Kaufland Varna', 2);
+values (supermarkets_sequence.NEXTVAL, 'Supermarket "Bourgas - Plaza"', 3);
 insert into SUPERMARKETS(Id, Name, TownId)
-values (supermarkets_sequence.NEXTVAL, 'Penny Plovdid', 4);
-insert into SUPERMARKETS(Id, Name, TownId)
-values (supermarkets_sequence.NEXTVAL, 'Lidl Rouse', 6);
-insert into SUPERMARKETS(Id, Name, TownId)
-values (supermarkets_sequence.NEXTVAL, 'Metro Kaspichan', 5);
-insert into SUPERMARKETS(Id, Name, TownId)
-values (supermarkets_sequence.NEXTVAL, 'Kaufland Bourgas', 3);
-insert into SUPERMARKETS(Id, Name, TownId)
-values (supermarkets_sequence.NEXTVAL, 'Lidl Sofia', 1);
+values (supermarkets_sequence.NEXTVAL, 'Supermarket "Bay Ivan" - Zmeyovo', 4);
 
 insert into MEASURES(Id, Name)
 values (measures_sequence.NEXTVAL,'liters');
@@ -187,10 +166,11 @@ values (vendors_sequence.NEXTVAL,'Nestle Sofia Corp.');
 insert into VENDORS(Id, Name)
 values (vendors_sequence.NEXTVAL,'Zagorka Corp.');
 insert into VENDORS(Id, Name)
+values (vendors_sequence.NEXTVAL,'Kamenitza Ltd.');
+insert into VENDORS(Id, Name)
 values (vendors_sequence.NEXTVAL,'Targovishte Bottling Company Ltd.');
 insert into VENDORS(Id, Name)
 values (vendors_sequence.NEXTVAL,'Coca-Cola HBC AG');
-
 
 insert into PRODUCTSTYPES(Id, Name)
 values (productstypes_sequence.NEXTVAL,'Alcohol');
@@ -199,21 +179,14 @@ values (productstypes_sequence.NEXTVAL,'Sweets');
 insert into PRODUCTSTYPES(Id, Name)
 values (productstypes_sequence.NEXTVAL,'Non-alcohol');
 
-
 insert into PRODUCTS(Id, VendorId, Name, MeasureId, TypeId, Price)
-values (products_sequence.NEXTVAL, 2, 'Beer "Zagorka"', 1, 1 , 0.86);
+values (products_sequence.NEXTVAL, 4, 'Vodka "Targovishte"', 1, 1, 7.7);
 insert into PRODUCTS(Id, VendorId, Name, MeasureId, TypeId, Price)
-values (products_sequence.NEXTVAL, 3, 'Vodka "Targovishte"', 1, 1 , 7.56);
+values (products_sequence.NEXTVAL, 3, 'Beer "Beck''s"', 1, 1, 1.05);
 insert into PRODUCTS(Id, VendorId, Name, MeasureId, TypeId, Price)
-values (products_sequence.NEXTVAL, 2, 'Beer "Beck`s"', 1, 1 , 1.03);
+values (products_sequence.NEXTVAL, 2, 'Beer "Zagorka"', 1, 1 , 0.88);
 insert into PRODUCTS(Id, VendorId, Name, MeasureId, TypeId, Price)
-values (products_sequence.NEXTVAL, 1, 'Chocolate "Milka"', 2, 2 , 2.80);
-insert into PRODUCTS(Id, VendorId, Name, MeasureId, TypeId, Price)
-values (products_sequence.NEXTVAL, 4, 'Coca-Cola', 1, 3 , 1.60);
-
-
-
-
+values (products_sequence.NEXTVAL, 1, 'Chocolate "Milka"', 2, 2 , 2.9);
 
 -- Test if everything is ok
 select * from MEASURES;
@@ -225,15 +198,15 @@ select * from PRODUCTSTYPES;
 select * from PRODUCTS;
 
 select 
-  p.PRODUCTNAME,
-  p.price,
-  v.VENDORNAME,
-  pt.TYPENAME as "Type",
-  m.MEASURENAME as "Measure"
+  p.Name AS "Product",
+  p.Price AS "Price",
+  v.Name AS "Vendor",
+  pt.Name as "Type",
+  m.Name as "Measure"
 from products p
 join VENDORS v
-  on v.VENDOR_ID = p.VENDOR_ID
+  on v.ID = p.VENDORID
 join MEASURES m
-  on m.MEASURE_ID = p.MEASURE_ID
+  on m.ID = p.MEASUREID
 join PRODUCTSTYPES pt
-  on pt.TYPE_ID = p.TYPE_ID;
+  on pt.ID = p.TYPEID;

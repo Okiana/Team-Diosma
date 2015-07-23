@@ -7,6 +7,7 @@
     using Ionic.Zip;
     using MarketSystem.Models;
     using MarketSystem.MsSqlDatabase;
+    using System.Text.RegularExpressions;
 
     public class ZipExtractor : MarketData
     {
@@ -47,10 +48,12 @@
                         Console.WriteLine(report.FileName);
 
                         var supermarket = sheet.Rows[1].AllocatedCells[1].Value.ToString();
+                        supermarket = this.ReplaceMsCharacters(supermarket);
 
                         for (var i = 3; i < sheet.Rows.Count - 1; i++)
                         {
-                            var product = sheet.Rows[i].AllocatedCells[1].Value.ToString();
+                            var product = sheet.Rows[i].AllocatedCells[1].Value.ToString().Normalize();
+                            product = this.ReplaceMsCharacters(product);
                             var quantity = int.Parse(sheet.Rows[i].AllocatedCells[2].Value.ToString());
                             var unitPrice = decimal.Parse(sheet.Rows[i].AllocatedCells[3].Value.ToString());
                             var totalSum = decimal.Parse(sheet.Rows[i].AllocatedCells[4].Value.ToString());
@@ -64,8 +67,8 @@
                             {
                                 var salesReport = new SalesReport
                                 {
-                                    Supermarket = dbSupermarket,
-                                    Product = dbProduct,
+                                    SupermarketId = dbSupermarket.Id,
+                                    ProductId = dbProduct.Id,
                                     Quantity = quantity,
                                     UnitPrice = unitPrice,
                                     TotalSum = totalSum,
@@ -84,12 +87,34 @@
             return this;
         }
 
-        public void DeleteTempFolder()
+        private void DeleteTempFolder()
         {
             if (Directory.Exists(TargetDirectory))
             {
                 Directory.Delete(TargetDirectory, true);
             }
-        } 
+        }
+
+        private string ReplaceMsCharacters(string name)
+        {
+            var newName = name.Trim();
+
+            newName = newName.Replace('\u2013', '-');
+            newName = newName.Replace('\u2014', '-');
+            newName = newName.Replace('\u2015', '-');
+            newName = newName.Replace('\u2017', '_');
+            newName = newName.Replace('\u2018', '\'');
+            newName = newName.Replace('\u2019', '\'');
+            newName = newName.Replace('\u201a', ',');
+            newName = newName.Replace('\u201b', '\'');
+            newName = newName.Replace('\u201c', '\"');
+            newName = newName.Replace('\u201d', '\"');
+            newName = newName.Replace('\u201e', '\"');
+            newName = newName.Replace("\u2026", "...");
+            newName = newName.Replace('\u2032', '\'');
+            newName = newName.Replace('\u2033', '\"');
+
+            return newName; 
+        }
     }
 }
