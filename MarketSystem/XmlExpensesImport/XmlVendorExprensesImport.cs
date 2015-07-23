@@ -35,12 +35,8 @@
                     var dt = monthExpense.Attribute("month").Value;
                     var parsedDatetime = DateTime.Parse(dt);
 
-                    //Console.WriteLine(parsedDate);
-                    //System.Console.WriteLine(parsedDate);
-                    var expense = monthExpense.Value;
-                    //System.Console.WriteLine("month: {0} - {1}", month, expense);
-                    //System.Console.WriteLine(month);
-
+                  
+                    var expense = monthExpense.Value;                
                     var vendorExpense = new VendorExpense
                     {
                         VendorId = vendorId,
@@ -49,14 +45,6 @@
                     };
 
                     this.VendorExpenses.Add(vendorExpense);
-
-                    //var vendorExpense = new VendorExpense();
-                    //vendorExpense.VendorId = vendorId;
-                    //vendorExpense.Month = parsedDatetime;
-                    //System.Console.WriteLine(DateTime.Parse(month));
-                    //vendorExpense.Expenses = decimal.Parse(expense);
-
-                    //sqlContext.VendorExpenses.Add(vendorExpense);
 
                 }
 
