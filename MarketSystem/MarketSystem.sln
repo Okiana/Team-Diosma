@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarketSystem.Models", "MarketSystem.Models\MarketSystem.Models.csproj", "{FAD5FDBF-D2A6-4B59-BA8F-9C6DEE5DA042}"
 EndProject
@@ -23,6 +23,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarketSystem.Engine", "MarketSystem.Engine\MarketSystem.Engine.csproj", "{4AB5135D-CC5B-4821-8EE7-0468BF95B5A9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XmlExpensesImport", "XmlExpensesImport\XmlExpensesImport.csproj", "{268A9315-A4E2-44D1-A859-75ED9A58DA32}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XMLReportByVedor", "XMLReportByVedor\XMLReportByVedor.csproj", "{29F30024-9F95-4BC8-A622-577A11C3F395}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -58,6 +60,10 @@ Global
 		{268A9315-A4E2-44D1-A859-75ED9A58DA32}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{268A9315-A4E2-44D1-A859-75ED9A58DA32}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{268A9315-A4E2-44D1-A859-75ED9A58DA32}.Release|Any CPU.Build.0 = Release|Any CPU
+		{29F30024-9F95-4BC8-A622-577A11C3F395}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29F30024-9F95-4BC8-A622-577A11C3F395}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29F30024-9F95-4BC8-A622-577A11C3F395}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29F30024-9F95-4BC8-A622-577A11C3F395}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

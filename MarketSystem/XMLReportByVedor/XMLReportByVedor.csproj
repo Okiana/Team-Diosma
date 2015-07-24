@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{4AB5135D-CC5B-4821-8EE7-0468BF95B5A9}</ProjectGuid>
+    <ProjectGuid>{29F30024-9F95-4BC8-A622-577A11C3F395}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MarketSystem.Engine</RootNamespace>
-    <AssemblyName>MarketSystem.Engine</AssemblyName>
+    <RootNamespace>MarketSystem.XMLReportByVedor</RootNamespace>
+    <AssemblyName>XMLReportByVedor</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
@@ -32,20 +32,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer">
       <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
-    </Reference>
-    <Reference Include="GemBox.Spreadsheet, Version=39.3.30.1077, Culture=neutral, PublicKeyToken=b1b72c69714d4847, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\GemBox.Spreadsheet.39.3.30.1077\lib\net30\GemBox.Spreadsheet.dll</HintPath>
-    </Reference>
-    <Reference Include="Ionic.Zip, Version=1.9.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\DotNetZip.1.9.3\lib\net20\Ionic.Zip.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -57,7 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Engine.cs" />
+    <Compile Include="XmlReportGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -69,22 +61,6 @@
       <Project>{bd7654a1-22c4-40f4-9ac4-ce151c0897c9}</Project>
       <Name>MsSqlDatabase</Name>
     </ProjectReference>
-    <ProjectReference Include="..\OracleDatabase\OracleDatabase.csproj">
-      <Project>{7517bcf0-0b1d-44f1-af58-f8ffe51976a2}</Project>
-      <Name>OracleDatabase</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\XmlExpensesImport\XmlExpensesImport.csproj">
-      <Project>{268a9315-a4e2-44d1-a859-75ed9a58da32}</Project>
-      <Name>XmlExpensesImport</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\XMLReportByVedor\XMLReportByVedor.csproj">
-      <Project>{29f30024-9f95-4bc8-a622-577a11c3f395}</Project>
-      <Name>XMLReportByVedor</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ZipExtractor\ZipExtractor.csproj">
-      <Project>{11fc2072-886c-4f6d-b9b6-fe341cf27de5}</Project>
-      <Name>ZipExtractor</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -92,12 +68,6 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
-  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
