@@ -14,7 +14,7 @@
     {
         private const string SalesImportPath = @"..\..\..\..\Import\Sample-Sales-Reports.zip";
         private const string ExpensesImportPath = @"..\..\..\..\Import\Sample-Vendor-Expenses.xml";
-        private const string XmlResultFileName = @"..\..\..\..\Export\result.xml";
+        private const string XmlResultFileName = @"..\..\..\..\Export\";
 
         private const char SeparatorSymbol = '-';
         private const int SeparatorLength = 50;
@@ -60,6 +60,13 @@
         {
             /*DateTime startDate = new DateTime(2014, 07, 20);
             DateTime endDate = new DateTime(2014, 07, 22);*/
+
+            if (!Directory.Exists(XmlResultFileName))
+            {
+                Directory.CreateDirectory(XmlResultFileName);
+            }
+            
+
             Console.WriteLine(SeparatorLiner);
             Console.WriteLine("Enter start date in format [yyyy.mm.dd]:");
             DateTime startDate = DateTime.Parse(Console.ReadLine());
@@ -68,8 +75,8 @@
             Console.WriteLine(SeparatorLiner);
 
             Console.WriteLine("Generating report from sales to xml...");
-            XmlReportGenerator.GenerateXmlReport(startDate, endDate, XmlResultFileName);
-            Console.WriteLine("The report is done!\n Path: {0}", Path.GetFullPath(XmlResultFileName));
+            var path = XmlReportGenerator.GenerateXmlReport(startDate, endDate, XmlResultFileName);
+            Console.WriteLine("The report is done!\n Path: {0}", Path.GetFullPath(path));
             Console.WriteLine(SeparatorLiner);
         }
 
@@ -77,7 +84,7 @@
         {
             var sqlContext = new SqlMarketContext();
 
-            Console.WriteLine(new string('-', 50));
+            Console.WriteLine(SeparatorLiner);
             Console.WriteLine("Extracting data from report... ");
 
             var xmlExpensesReportToMsSql = new XmlVendorExprensesImport(ExpensesImportPath, sqlContext);
@@ -88,7 +95,7 @@
             MsSqlManager.TransferData(data);
 
             Console.WriteLine("Vendor expense report imported.");
-            Console.WriteLine(new string('-', 50));
+            Console.WriteLine(SeparatorLiner);
         }
     }
 }

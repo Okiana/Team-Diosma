@@ -12,7 +12,9 @@ namespace MarketSystem.XMLReportByVedor
 
     public class XmlReportGenerator
     {
-        public static void GenerateXmlReport(DateTime startDate, DateTime endDate, string resultFileName)
+        private const string ResultFileName = "result.xml";
+
+        public static string GenerateXmlReport(DateTime startDate, DateTime endDate, string exportFolder)
         {
             ValidateDates(startDate, endDate);
 
@@ -49,8 +51,11 @@ namespace MarketSystem.XMLReportByVedor
                 }
 
                 doc.Add(rootNode);
-                doc.Save(resultFileName);
+
+                doc.Save(exportFolder + ResultFileName);
             }
+
+            return exportFolder + ResultFileName;
         }
 
         private static void ValidateDates(DateTime startDate, DateTime endDate)
