@@ -1,6 +1,7 @@
 ﻿namespace MarketSystem.MsSqlDatabase
 {
     using System.Collections.Generic;
+    using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
     using Models;
@@ -23,6 +24,128 @@
             context.SaveChanges();
         }
 
+        public MarketData GetData()
+        {
+            var context = new SqlMarketContext();
+
+            this.GetTowns(context.Towns);
+            this.GetSupermarkets(context.Supermarkets);
+            this.GetMeasures(context.Measures);
+            this.GetProductsTypes(context.ProductsTypes);
+            this.GetVendors(context.Vendors);
+            this.GetProducts(context.Products);
+            this.GetSales(context.Sales);
+            this.GetVendorExpenses(context.VendorExpenses);
+
+            return this;
+        }
+
+        private void GetTowns(IQueryable<Town> towns)
+        {
+            towns
+                .OrderBy(t => t.Id)
+                .ToList()
+                .ForEach(t => this.Towns.Add(new Town
+                {
+                    Id = t.Id,
+                    Name = t.Name
+                }));
+        }
+
+        private void GetSupermarkets(IQueryable<Supermarket> supermarkets)
+        {
+            supermarkets
+                .OrderBy(s => s.Id)
+                .ToList()
+                .ForEach(s => this.Supermarkets.Add(new Supermarket
+                {
+                    Id = s.Id,
+                    Name = s.Name,
+                    TownId = s.TownId
+                }));
+        }
+
+        private void GetMeasures(IQueryable<Measure> measures)
+        {
+            measures
+                .OrderBy(m => m.Id)
+                .ToList()
+                .ForEach(m => this.Measures.Add(new Measure
+                {
+                    Id = m.Id,
+                    Name = m.Name
+                }));
+        }
+
+        private void GetProductsTypes(IQueryable<ProductType> productsTypes)
+        {
+            productsTypes
+                .OrderBy(pt => pt.Id)
+                .ToList()
+                .ForEach(pt => this.ProductsTypes.Add(new ProductType
+                {
+                    Id = pt.Id,
+                    Name = pt.Name
+                }));
+        }
+
+        private void GetVendors(IQueryable<Vendor> vendors)
+        {
+            vendors
+                .OrderBy(v => v.Id)
+                .ToList()
+                .ForEach(v => this.Vendors.Add(new Vendor
+                {
+                    Id = v.Id,
+                    Name = v.Name
+                }));
+        }
+
+        private void GetProducts(IQueryable<Product> products)
+        {
+            products
+                .OrderBy(p => p.Id)
+                .ToList()
+                .ForEach(p => this.Products.Add(new Product
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Price = p.Price,
+                    VendorId = p.VendorId,
+                    ProductTypeId = p.ProductTypeId,
+                    MeasureId = p.MeasureId
+                }));
+        }
+
+        private void GetSales(IQueryable<Sale> sales)
+        {
+            sales
+                .OrderBy(s => s.Id)
+                .ToList()
+                .ForEach(s => this.SalesReports.Add(new Sale
+                {
+                    Id = s.Id,
+                    Date = s.Date,
+                    SupermarketId = s.SupermarketId,
+                    ProductId = s.ProductId,
+                    Quantity = s.Quantity,
+                    UnitPrice = s.UnitPrice,
+                    TotalSum = s.TotalSum
+                }));
+        }
+
+        private void GetVendorExpenses(IQueryable<VendorExpense> vendorExpenses)
+        {
+            vendorExpenses
+                .ToList()
+                .ForEach(v => this.VendorExpenses.Add(new VendorExpense
+                {
+                    VendorId = v.VendorId,
+                    Month = v.Month,
+                    Expenses = v.Expenses
+                }));
+        }
+
         public int? GetSupermarketIdByName(string supermarketName)
         {
             var context = new SqlMarketContext();
@@ -39,13 +162,6 @@
             var productId = context.Products.FirstOrDefault(s => s.Name == productName).Id;
 
             return productId;
-        }
-
-        public MarketData GetVendorsIncomesAndExpenses()
-        {
-            var context = new SqlMarketContext();
-
-            return this;
         }
 
         private static void TransferTowns(IEnumerable<Town> towns, SqlMarketContext context)

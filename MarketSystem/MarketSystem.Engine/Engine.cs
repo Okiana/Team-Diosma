@@ -3,12 +3,11 @@
     using System;
     using System.Globalization;
     using System.IO;
-
+    using MySqlDatabase;
     using MarketSystem.MsSqlDatabase;
     using MarketSystem.OracleDatabase;
     using MarketSystem.XmlExpensesImport;
     using MarketSystem.XMLReportByVedor;
-
     using ZipExtractor;
 
     public static class Engine
@@ -30,7 +29,7 @@
             Console.WriteLine("Extracting data from Oracle Database...");
             var data = oracleManager.GetData();
             
-            Console.WriteLine("Transferring to SQL Server...");
+            Console.WriteLine("Sending data to SQL Server...");
             MsSqlManager.TransferData(data);
 
             Console.WriteLine("Data transferred.");
@@ -46,7 +45,7 @@
             var zipExtractor = new ZipExtractor(SalesImportPath, sqlContext);
             var data = zipExtractor.ExtractData();
 
-            Console.WriteLine("\nImporting to SQL Server...");
+            Console.WriteLine("\nSending data to SQL Server...");
             MsSqlManager.TransferData(data);
 
             Console.WriteLine("Sales reports imported.");
@@ -85,10 +84,24 @@
             var xmlExpensesReportToMsSql = new XmlVendorExprensesImport(ExpensesImportPath, sqlContext);
             var data = xmlExpensesReportToMsSql.GetReportData();
 
-            Console.WriteLine("Importing to SQL Server...");
+            Console.WriteLine("Sending data to SQL Server...");
             MsSqlManager.TransferData(data);
 
             Console.WriteLine("Vendor expense report imported.");
+            Console.WriteLine(SeparatorLiner);
+        }
+
+        public static void SqlServerToMySqlTransfer()
+        {
+            Console.WriteLine(SeparatorLiner);
+            Console.WriteLine("Extracting data from SQL server...");
+            var sqlManager = new MsSqlManager();
+
+            Console.WriteLine("Sending data from MySQL server...");
+            var data = sqlManager.GetData();
+            MySqlManager.TransferData(data);
+
+            Console.WriteLine("Data transferred.");
             Console.WriteLine(SeparatorLiner);
         }
     }

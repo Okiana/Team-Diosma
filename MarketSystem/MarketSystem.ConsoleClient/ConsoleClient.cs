@@ -14,6 +14,7 @@
                     "2. Load Zip Excel Reports to MsSql Database\n" +
                     "4. Generate XML Sales by Vendor from given date range\n" +
                     "6. Load Xml Vendors Expenses Report into MsSql Database\n" +
+                    "7. Load data from MsSql to MySql\n" +
                     "0. Exit\n";
 
             try
@@ -34,6 +35,8 @@
                     case 4: Engine.XMLExport();
                         break;
                     case 6: Engine.XmlExpensesReportToMsSql();
+                        break;
+                    case 7: Engine.MySqlConnection();
                         break;
                     default: throw new InvalidOperationException("Invalid operation.");
                 }

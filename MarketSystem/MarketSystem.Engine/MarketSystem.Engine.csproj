@@ -69,6 +69,10 @@
       <Project>{bd7654a1-22c4-40f4-9ac4-ce151c0897c9}</Project>
       <Name>MsSqlDatabase</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MySqlDatabase\MySqlDatabase.csproj">
+      <Project>{1a7d1df4-489c-45f0-8562-43b544c2372a}</Project>
+      <Name>MySqlDatabase</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OracleDatabase\OracleDatabase.csproj">
       <Project>{7517bcf0-0b1d-44f1-af58-f8ffe51976a2}</Project>
       <Name>OracleDatabase</Name>
