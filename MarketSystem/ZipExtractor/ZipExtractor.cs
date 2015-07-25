@@ -10,7 +10,7 @@
 
     public class ZipExtractor : MarketData
     {
-        public ZipExtractor(string archivePath, SqlMarketContext context, MsSqlManager sqlManager)
+        public ZipExtractor(string archivePath, SqlMarketContext context)
         {
             this.ArchivePath = archivePath;
             this.SqlMarketContext = context;

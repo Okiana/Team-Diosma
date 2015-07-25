@@ -7,7 +7,7 @@
 
     public class MsSqlManager : MarketData
     {
-        public void TransferData(MarketData marketData)
+        public static void TransferData(MarketData marketData)
         {
             var context = new SqlMarketContext();
 
