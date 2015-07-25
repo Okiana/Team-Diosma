@@ -36,7 +36,7 @@
                         break;
                     case 6: Engine.XmlExpensesReportToMsSql();
                         break;
-                    case 7: Engine.MySqlConnection();
+                    case 7: Engine.SqlServerToMySqlTransfer();
                         break;
                     default: throw new InvalidOperationException("Invalid operation.");
                 }
