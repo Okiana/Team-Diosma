@@ -10,10 +10,10 @@
         public static void Main()
         {
             const string Menu = "Menu:\n" +
-                    "1. Transfer data from Oracle Database to MsSql Database\n" +
+                    "1. Replicate data from Oracle Database into MsSql Database\n" +
                     "2. Load Zip Excel Reports to MsSql Database\n" +
-                    "4. Generate XML Sales by Vendor\n" +
-                    "6. Load Xml Vendors Expenses Report to MsSql Database\n" +
+                    "4. Generate XML Sales by Vendor from given date range\n" +
+                    "6. Load Xml Vendors Expenses Report into MsSql Database\n" +
                     "0. Exit\n";
 
             try

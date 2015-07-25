@@ -9,7 +9,19 @@
         {
             var context = new OracleContext();
 
-            context.TOWNS
+            this.GetTowns(context.TOWNS);
+            this.GetSupermarkets(context.SUPERMARKETS);
+            this.GetMeasures(context.MEASURES);
+            this.GetProductsTypes(context.PRODUCTSTYPES);
+            this.GetVendors(context.VENDORS);
+            this.GetProducts(context.PRODUCTS);
+
+            return this;
+        }
+
+        private void GetTowns(IQueryable<TOWN> towns)
+        {
+            towns
                 .OrderBy(t => t.ID)
                 .ToList()
                 .ForEach(t => this.Towns.Add(new Town
@@ -17,8 +29,11 @@
                     Id = t.ID,
                     Name = t.NAME
                 }));
+        }
 
-            context.SUPERMARKETS
+        private void GetSupermarkets(IQueryable<SUPERMARKET> supermarkets)
+        {
+            supermarkets
                 .OrderBy(s => s.ID)
                 .ToList()
                 .ForEach(s => this.Supermarkets.Add(new Supermarket
@@ -27,8 +42,11 @@
                     Name = s.NAME,
                     TownId = s.TOWNID
                 }));
+        }
 
-            context.MEASURES
+        private void GetMeasures(IQueryable<MEASURE> measures)
+        {
+            measures
                 .OrderBy(m => m.ID)
                 .ToList()
                 .ForEach(m => this.Measures.Add(new Measure
@@ -36,8 +54,11 @@
                     Id = m.ID,
                     Name = m.NAME
                 }));
+        }
 
-            context.PRODUCTSTYPES
+        private void GetProductsTypes(IQueryable<PRODUCTSTYPE> productsTypes)
+        {
+            productsTypes
                 .OrderBy(pt => pt.ID)
                 .ToList()
                 .ForEach(pt => this.ProductsTypes.Add(new ProductType
@@ -45,8 +66,11 @@
                     Id = pt.ID,
                     Name = pt.NAME
                 }));
+        }
 
-            context.VENDORS
+        private void GetVendors(IQueryable<VENDOR> vendors)
+        {
+            vendors
                 .OrderBy(v => v.ID)
                 .ToList()
                 .ForEach(v => this.Vendors.Add(new Vendor
@@ -54,21 +78,22 @@
                     Id = v.ID,
                     Name = v.NAME
                 }));
+        }
 
-            context.PRODUCTS
+        private void GetProducts(IQueryable<PRODUCT> products)
+        {
+            products
                 .OrderBy(p => p.ID)
                 .ToList()
                 .ForEach(p => this.Products.Add(new Product
-                    {
-                        Id = p.ID,
-                        Name = p.NAME,
-                        Price = p.PRICE,
-                        VendorId = p.VENDORID,
-                        ProductTypeId = p.TYPEID,
-                        MeasureId = p.MEASUREID
-                    }));
-
-            return this;
+                {
+                    Id = p.ID,
+                    Name = p.NAME,
+                    Price = p.PRICE,
+                    VendorId = p.VENDORID,
+                    ProductTypeId = p.TYPEID,
+                    MeasureId = p.MEASUREID
+                }));
         }
     }
 }
