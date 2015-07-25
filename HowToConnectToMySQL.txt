@@ -1,0 +1,55 @@
+Create Database using SQl script
+
+To start working with VS 2013 and EF 6 
+
+ 1- Install the MySQL for Visual Studio 1.2.3
+
+	https://cdn.mysql.com/Downloads/MySQLInstaller/mysql-visualstudio-plugin-1.1.1.msi 
+
+
+ 2- Install the Connector/Net 6.8.6 product.   or  later
+
+	http://dev.mysql.com/downloads/connector/net/ 
+
+3.Add new class library
+
+4.Install references in this order:
+
+5.Add references : Browse   C:\Program Files (x86)\MySQL\MySQL Connector Net 6.8.6\Assemblies\v4.5     in my case
+	select:
+		1.MySql.Data.dll
+		2.MySql.Data.Entity.EF6.dll
+		3.MySql.Web.dll
+
+6.Add references : Browse   C:\Program Files (x86)\MySQL\MySQL for Visual Studio 1.2.3\Assemblies\v4.0
+	select:
+		1.MySql.Data.Entity.dll
+
+7.EntityFramework 6  -   Add references to the project 
+	
+8.Replace ntityFramework tag  in app.config e  for the current project  with:
+	<entityFramework>
+    	<defaultConnectionFactory type="System.Data.Entity.Infrastructure.SqlConnectionFactory, EntityFramework"/>
+    	<providers>
+        		<provider invariantName="MySql.Data.MySqlClient" 
+          		  type="MySql.Data.MySqlClient.MySqlProviderServices, MySql.Data.Entity.EF6"/>
+        		<provider invariantName="System.Data.SqlClient" 
+          		  type="System.Data.Entity.SqlServer.SqlProviderServices, EntityFramework.SqlServer"/>
+   	 </providers>
+	</entityFramework>
+
+
+9. Rebuild the project
+
+10.Add ADO.NET item with mySql connection settings:
+	Server Name: localhost
+	User Name: root   --  this is in my case
+	Pass:      tha pass for the roor user in mysql server
+
+
+
+
+usefull:
+http://dev.mysql.com/doc/connector-net/en/connector-net-entityframework60.html
+http://dev.mysql.com/doc/connector-net/en/connector-net-tutorials-entity-framework-winform-data-source.html
+http://forums.mysql.com/read.php?174,601264,601264
