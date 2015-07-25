@@ -10,15 +10,18 @@
 
     public class ZipExtractor : MarketData
     {
-        public ZipExtractor(string archivePath, SqlMarketContext context)
+        public ZipExtractor(string archivePath, SqlMarketContext context, MsSqlManager sqlManager)
         {
             this.ArchivePath = archivePath;
             this.SqlMarketContext = context;
+            this.SqlManager = new MsSqlManager();
         }
 
-        public string ArchivePath { get; set; }
+        public string ArchivePath { get; private set; }
 
-        public SqlMarketContext SqlMarketContext { get; set; }
+        public SqlMarketContext SqlMarketContext { get; private set; }
+
+        public MsSqlManager SqlManager { get; set; }
 
         public MarketData ExtractData()
         {
@@ -56,19 +59,19 @@
             {
                 Console.WriteLine(filename);
 
-                var supermarket = sheet.Rows[1].AllocatedCells[1].Value.ToString();
-                supermarket = this.ReplaceSpecialCharacters(supermarket);
+                var supermarketName = sheet.Rows[1].AllocatedCells[1].Value.ToString();
+                supermarketName = this.ReplaceSpecialCharacters(supermarketName);
 
-                var dbSupermarket =
-                    this.SqlMarketContext.Supermarkets.FirstOrDefault(s => s.Name == supermarket);
+                var supermarketId =
+                    this.SqlManager.GetSupermarketIdByName(supermarketName);
 
-                if (dbSupermarket == null)
+                if (supermarketId == null)
                 {
                     Console.WriteLine("Supermarket does not exist in the database!");
                     continue;
                 }
 
-                var productsImported = this.ParseRowsData(reportDate, sheet, dbSupermarket.Id);
+                var productsImported = this.ParseRowsData(reportDate, sheet, (int)supermarketId);
 
                 Console.WriteLine("{0}/{1} sales imported.\n", productsImported, sheet.Rows.Count - 4);
             }
@@ -80,14 +83,14 @@
 
             for (var i = 3; i < sheet.Rows.Count - 1; i++)
             {
-                var product = sheet.Rows[i].AllocatedCells[1].Value.ToString().Normalize();
-                product = this.ReplaceSpecialCharacters(product);
+                var productName = sheet.Rows[i].AllocatedCells[1].Value.ToString().Normalize();
+                productName = this.ReplaceSpecialCharacters(productName);
 
-                var dbProduct = this.SqlMarketContext.Products.FirstOrDefault(p => p.Name == product);
+                var productId = this.SqlManager.GetProductIdByName(productName);
 
-                if (dbProduct != null)
+                if (productId != null)
                 {
-                    this.GenerateSalesReport(reportDate, sheet.Rows[i], dbSupermarketId, dbProduct.Id);
+                    this.GenerateSalesReport(reportDate, sheet.Rows[i], dbSupermarketId, (int)productId);
                     productsImported++;
                 }
             }

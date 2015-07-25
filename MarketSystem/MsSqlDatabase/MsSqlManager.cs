@@ -5,9 +5,9 @@
     using System.Linq;
     using Models;
 
-    public class MsSqlManager
+    public class MsSqlManager : MarketData
     {
-        public static void TransferData(MarketData marketData)
+        public void TransferData(MarketData marketData)
         {
             var context = new SqlMarketContext();
 
@@ -21,6 +21,31 @@
             TransferVendorExpenses(marketData.VendorExpenses, context);
 
             context.SaveChanges();
+        }
+
+        public int? GetSupermarketIdByName(string supermarketName)
+        {
+            var context = new SqlMarketContext();
+
+            var supermarketId = context.Supermarkets.FirstOrDefault(s => s.Name == supermarketName).Id;
+
+            return supermarketId;
+        }
+
+        public int? GetProductIdByName(string productName)
+        {
+            var context = new SqlMarketContext();
+
+            var productId = context.Products.FirstOrDefault(s => s.Name == productName).Id;
+
+            return productId;
+        }
+
+        public MarketData GetVendorsIncomesAndExpenses()
+        {
+            var context = new SqlMarketContext();
+
+            return this;
         }
 
         private static void TransferTowns(IEnumerable<Town> towns, SqlMarketContext context)
