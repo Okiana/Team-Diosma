@@ -3,3 +3,5 @@ App.config
 bin/
 obj/
 packages/
+StyleCop.Cache
+Settings.StyleCop

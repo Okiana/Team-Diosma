@@ -2,7 +2,7 @@
 {
     using System;
 
-    public class SalesReport
+    public class Sale
     {
         public int Id { get; set; }
 

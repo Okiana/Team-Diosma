@@ -1,6 +1,7 @@
 ﻿namespace MarketSystem.Engine
 {
     using System;
+    using System.Globalization;
     using System.IO;
 
     using MarketSystem.MsSqlDatabase;
@@ -27,10 +28,7 @@
 
             Console.WriteLine(SeparatorLiner);
             Console.WriteLine("Extracting data from Oracle Database...");
-
             var data = oracleManager.GetData();
-
-            //Console.Write(data);
             
             Console.WriteLine("Transferring to SQL Server...");
             MsSqlManager.TransferData(data);
@@ -42,14 +40,13 @@
         public static void ZipExcelReportsToMsSql()
         {
             var sqlContext = new SqlMarketContext();
+
             Console.WriteLine(SeparatorLiner);
             Console.WriteLine("Extracting data from reports...\n");
-
             var zipExtractor = new ZipExtractor(SalesImportPath, sqlContext);
             var data = zipExtractor.ExtractData();
 
             Console.WriteLine("\nImporting to SQL Server...");
-
             MsSqlManager.TransferData(data);
 
             Console.WriteLine("Sales reports imported.");
@@ -66,12 +63,11 @@
                 Directory.CreateDirectory(XmlResultFileName);
             }
             
-
             Console.WriteLine(SeparatorLiner);
             Console.WriteLine("Enter start date in format [yyyy.mm.dd]:");
-            DateTime startDate = DateTime.Parse(Console.ReadLine());
+            DateTime startDate = DateTime.ParseExact(Console.ReadLine(), "yyyy.MM.dd", CultureInfo.InvariantCulture);
             Console.WriteLine("Enter end date in format [yyyy.mm.dd]: ");
-            DateTime endDate = DateTime.Parse(Console.ReadLine());
+            DateTime endDate = DateTime.ParseExact(Console.ReadLine(), "yyyy.MM.dd", CultureInfo.InvariantCulture);
             Console.WriteLine(SeparatorLiner);
 
             Console.WriteLine("Generating report from sales to xml...");
@@ -86,12 +82,10 @@
 
             Console.WriteLine(SeparatorLiner);
             Console.WriteLine("Extracting data from report... ");
-
             var xmlExpensesReportToMsSql = new XmlVendorExprensesImport(ExpensesImportPath, sqlContext);
-            var data = xmlExpensesReportToMsSql.Aaa();
+            var data = xmlExpensesReportToMsSql.GetReportData();
 
             Console.WriteLine("Importing to SQL Server...");
-
             MsSqlManager.TransferData(data);
 
             Console.WriteLine("Vendor expense report imported.");

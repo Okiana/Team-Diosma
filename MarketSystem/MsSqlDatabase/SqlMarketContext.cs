@@ -12,13 +12,20 @@ namespace MarketSystem.MsSqlDatabase
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<SqlMarketContext, Configuration>());
         }
 
-        public virtual DbSet<Supermarket> Supermarkets { get; set; }
-        public virtual DbSet<Town> Towns { get; set; }
-        public virtual DbSet<Product> Products { get; set; }
-        public virtual DbSet<ProductType> ProductsTypes { get; set; }
-        public virtual DbSet<Vendor> Vendors { get; set; }
-        public virtual DbSet<Measure> Measures { get; set; }
-        public virtual DbSet<VendorExpense> VendorExpenses { get; set; }
-        public virtual DbSet<SalesReport> SalesReports { get; set; }
+        public virtual IDbSet<Supermarket> Supermarkets { get; set; }
+
+        public virtual IDbSet<Town> Towns { get; set; }
+                       
+        public virtual IDbSet<Product> Products { get; set; }
+                       
+        public virtual IDbSet<ProductType> ProductsTypes { get; set; }
+                       
+        public virtual IDbSet<Vendor> Vendors { get; set; }
+                       
+        public virtual IDbSet<Measure> Measures { get; set; }
+                       
+        public virtual IDbSet<VendorExpense> VendorExpenses { get; set; }
+                       
+        public virtual IDbSet<Sale> Sales { get; set; }
     }
 }

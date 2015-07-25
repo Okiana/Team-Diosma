@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MarketSystem.Models
+﻿namespace MarketSystem.Models
 {
+    using System;
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
+
     public class VendorExpense
     {
         [Key]
@@ -18,6 +14,7 @@ namespace MarketSystem.Models
         public DateTime Month { get; set; }
 
         public virtual Vendor Vendor { get; set; }
+
         public decimal Expenses { get; set; }
     }
 }

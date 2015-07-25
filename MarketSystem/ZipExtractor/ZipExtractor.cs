@@ -7,12 +7,9 @@
     using Ionic.Zip;
     using MarketSystem.Models;
     using MarketSystem.MsSqlDatabase;
-    using System.Text.RegularExpressions;
 
     public class ZipExtractor : MarketData
     {
-        private const string TargetDirectory = @"TempFiles\";
-
         public ZipExtractor(string archivePath, SqlMarketContext context)
         {
             this.ArchivePath = archivePath;
@@ -25,77 +22,99 @@
 
         public MarketData ExtractData()
         {
-            this.DeleteTempFolder();
-
             using (ZipFile zip = ZipFile.Read(this.ArchivePath))
             {
-                zip.ExtractAll(TargetDirectory);
+                var xlsFiles = zip.Where(z => z.FileName.EndsWith(".xls"));
 
-                var selection = zip.Entries
-                    .Where(e => e.FileName.EndsWith(".xls"))
-                    .Select(e => e);
-
-                foreach (var report in selection)
+                foreach (var report in xlsFiles)
                 {
-                    SpreadsheetInfo.SetLicense("FREE-LIMITED-KEY");
-
-                    ExcelFile ef = ExcelFile.Load(TargetDirectory + report.FileName);
-
-                    var date = DateTime.Parse(report.FileName.Substring(0, 11));
-                    
-                    foreach (ExcelWorksheet sheet in ef.Worksheets)
-                    {
-                        Console.WriteLine(report.FileName);
-
-                        var supermarket = sheet.Rows[1].AllocatedCells[1].Value.ToString();
-                        supermarket = this.ReplaceMsCharacters(supermarket);
-
-                        for (var i = 3; i < sheet.Rows.Count - 1; i++)
-                        {
-                            var product = sheet.Rows[i].AllocatedCells[1].Value.ToString().Normalize();
-                            product = this.ReplaceMsCharacters(product);
-                            var quantity = int.Parse(sheet.Rows[i].AllocatedCells[2].Value.ToString());
-                            var unitPrice = decimal.Parse(sheet.Rows[i].AllocatedCells[3].Value.ToString());
-                            var totalSum = decimal.Parse(sheet.Rows[i].AllocatedCells[4].Value.ToString());
-
-                            var dbSupermarket =
-                                this.SqlMarketContext.Supermarkets.FirstOrDefault(s => s.Name == supermarket);
-
-                            var dbProduct = this.SqlMarketContext.Products.FirstOrDefault(p => p.Name == product);
-
-                            if (dbSupermarket != null && dbProduct != null)
-                            {
-                                var salesReport = new SalesReport
-                                {
-                                    SupermarketId = dbSupermarket.Id,
-                                    ProductId = dbProduct.Id,
-                                    Quantity = quantity,
-                                    UnitPrice = unitPrice,
-                                    TotalSum = totalSum,
-                                    Date = date
-                                };
-
-                                this.SalesReports.Add(salesReport);
-                            }
-                        }
-                    }
+                    this.ParseReportData(report);
                 }
             }
-
-            this.DeleteTempFolder();
 
             return this;
         }
 
-        private void DeleteTempFolder()
+        private void ParseReportData(ZipEntry report)
         {
-            if (Directory.Exists(TargetDirectory))
+            using (MemoryStream ms = new MemoryStream())
             {
-                Directory.Delete(TargetDirectory, true);
+                report.Extract(ms);
+                ms.Position = 0;
+
+                SpreadsheetInfo.SetLicense("FREE-LIMITED-KEY");
+                ExcelFile ef = ExcelFile.Load(ms, LoadOptions.XlsDefault);
+                var date = DateTime.Parse(report.FileName.Substring(0, 11));
+
+                this.ParseExcelSheets(report.FileName, ef, date);
             }
         }
 
-        private string ReplaceMsCharacters(string name)
+        private void ParseExcelSheets(string filename, ExcelFile report, DateTime reportDate)
+        {
+            foreach (ExcelWorksheet sheet in report.Worksheets)
+            {
+                Console.WriteLine(filename);
+
+                var supermarket = sheet.Rows[1].AllocatedCells[1].Value.ToString();
+                supermarket = this.ReplaceSpecialCharacters(supermarket);
+
+                var dbSupermarket =
+                    this.SqlMarketContext.Supermarkets.FirstOrDefault(s => s.Name == supermarket);
+
+                if (dbSupermarket == null)
+                {
+                    Console.WriteLine("Supermarket does not exist in the database!");
+                    continue;
+                }
+
+                var productsImported = this.ParseRowsData(reportDate, sheet, dbSupermarket.Id);
+
+                Console.WriteLine("{0}/{1} sales imported.\n", productsImported, sheet.Rows.Count - 4);
+            }
+        }
+
+        private int ParseRowsData(DateTime reportDate, ExcelWorksheet sheet, int dbSupermarketId)
+        {
+            var productsImported = 0;
+
+            for (var i = 3; i < sheet.Rows.Count - 1; i++)
+            {
+                var product = sheet.Rows[i].AllocatedCells[1].Value.ToString().Normalize();
+                product = this.ReplaceSpecialCharacters(product);
+
+                var dbProduct = this.SqlMarketContext.Products.FirstOrDefault(p => p.Name == product);
+
+                if (dbProduct != null)
+                {
+                    this.GenerateSalesReport(reportDate, sheet.Rows[i], dbSupermarketId, dbProduct.Id);
+                    productsImported++;
+                }
+            }
+
+            return productsImported;
+        }
+
+        private void GenerateSalesReport(DateTime date, ExcelRow row, int dbSupermarketId, int dbProductId)
+        {
+            var quantity = int.Parse(row.AllocatedCells[2].Value.ToString());
+            var unitPrice = decimal.Parse(row.AllocatedCells[3].Value.ToString());
+            var totalSum = decimal.Parse(row.AllocatedCells[4].Value.ToString());
+
+            var salesReport = new Sale
+            {
+                SupermarketId = dbSupermarketId,
+                ProductId = dbProductId,
+                Quantity = quantity,
+                UnitPrice = unitPrice,
+                TotalSum = totalSum,
+                Date = date
+            };
+
+            this.SalesReports.Add(salesReport);
+        }
+
+        private string ReplaceSpecialCharacters(string name)
         {
             var newName = name.Trim();
 
@@ -114,7 +133,7 @@
             newName = newName.Replace('\u2032', '\'');
             newName = newName.Replace('\u2033', '\"');
 
-            return newName; 
+            return newName;
         }
     }
 }

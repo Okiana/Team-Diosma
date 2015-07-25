@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MarketSystem.XMLReportByVedor
+﻿namespace MarketSystem.XMLReportByVedor
 {
+    using System;
+    using System.Linq;
     using System.Xml.Linq;
     using MsSqlDatabase;
-
 
     public class XmlReportGenerator
     {
@@ -25,7 +20,7 @@ namespace MarketSystem.XMLReportByVedor
                 var rootNode = new XElement("sales");
 
                 var vendors =
-                    context.SalesReports.Where(s => s.Date >= startDate && s.Date <= endDate)
+                    context.Sales.Where(s => s.Date >= startDate && s.Date <= endDate)
                         .GroupBy(
                             v => v.Product.Vendor.Name,
                             (key, val) => new { Name = key, Sales = val.Select(d => new { d.Date, d.TotalSum }) });

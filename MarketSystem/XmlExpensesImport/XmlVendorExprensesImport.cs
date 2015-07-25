@@ -6,7 +6,7 @@
     using Models;
     using MsSqlDatabase;
 
-    public class XmlVendorExprensesImport: MarketData
+    public class XmlVendorExprensesImport : MarketData
     {
         public XmlVendorExprensesImport(string expensesImportPath, SqlMarketContext context)
         {
@@ -18,25 +18,26 @@
 
         public SqlMarketContext SqlMarketContext { get; set; }
 
-        public MarketData Aaa()
+        public MarketData GetReportData()
         {
-            var xmlDoc = XDocument.Load(ExpensesImportPath);
+            var xmlDoc = XDocument.Load(this.ExpensesImportPath);
             var vendorNamesList = xmlDoc.Root.Elements("vendor");
 
             foreach (var vendorElement in vendorNamesList)
             {
                 var vendorName = vendorElement.Attribute("name").Value;
-                var vendorId = this.SqlMarketContext.Vendors.Where(u => u.Name == vendorName).Select(u => u.Id).FirstOrDefault();
+                var vendorId = this.SqlMarketContext.Vendors
+                    .Where(u => u.Name == vendorName)
+                    .Select(u => u.Id)
+                    .FirstOrDefault();
 
                 var monthExpenses = vendorElement.Elements("expenses");
                 foreach (var monthExpense in monthExpenses)
                 {
-
                     var dt = monthExpense.Attribute("month").Value;
                     var parsedDatetime = DateTime.Parse(dt);
-
-                  
-                    var expense = monthExpense.Value;                
+                    var expense = monthExpense.Value;       
+         
                     var vendorExpense = new VendorExpense
                     {
                         VendorId = vendorId,
@@ -45,9 +46,7 @@
                     };
 
                     this.VendorExpenses.Add(vendorExpense);
-
                 }
-
             }
 
             return this;
