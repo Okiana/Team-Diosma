@@ -2,12 +2,11 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Globalization;
     using System.IO;
     using System.Linq;
-    using System.Threading;
     using iTextSharp.text;
     using iTextSharp.text.pdf;
+    using Models;
     using MsSqlDatabase;
 
     public static class SalesReportGenerator
@@ -18,11 +17,9 @@
         private const string ReportDirectoryPath = "..\\..\\..\\..\\Export\\";
         private const int WidthOfTable = 5;
 
-        private static readonly SqlMarketContext context = new SqlMarketContext();
-
         public static string ReportSalesByDate(DateTime startDate, DateTime endDate)
         {
-            var sales = FindSalesByDate(startDate, endDate);
+            var sales = MsSqlManager.FindSalesByDate(startDate, endDate);
             var fileName = string.Format("SalesReport_{0}_to_{1}.pdf", startDate.ToString(DefaultDateFormat), endDate.ToString(DefaultDateFormat));
 
             CreatePdfReport(sales, fileName, startDate, endDate);
@@ -30,7 +27,7 @@
             return ReportDirectoryPath + fileName;
         }
 
-        private static void CreatePdfReport(IQueryable<SaleByDate> salesByDate, string fileName, DateTime startDate, DateTime endDate)
+        private static void CreatePdfReport(IEnumerable<IGrouping<DateTime, Sale>> salesByDate, string fileName, DateTime startDate, DateTime endDate)
         {
             if (!Directory.Exists(ReportDirectoryPath))
             {
@@ -58,24 +55,24 @@
 
             foreach (var saleByDate in salesByDate)
             {
-                table.AddCell(CreateDateCell(saleByDate.SaleDate.ToString(DefaultDateFormat)));
+                table.AddCell(CreateDateCell(saleByDate.Key.ToString(DefaultDateFormat)));
                 table.AddCell(CreateHeaderCell("Product"));
                 table.AddCell(CreateHeaderCell("Quantity"));
                 table.AddCell(CreateHeaderCell("Unit Price"));
                 table.AddCell(CreateHeaderCell("Location"));
                 table.AddCell(CreateHeaderCell("Sum"));
 
-                foreach (var sale in saleByDate.Sales)
+                foreach (var sale in saleByDate)
                 {
-                    table.AddCell(CreateDataCell(sale.Product));
-                    table.AddCell(CreateDataCell(sale.Quantity + " " + sale.ProductMeasure, 1));
+                    table.AddCell(CreateDataCell(sale.Product.Name));
+                    table.AddCell(CreateDataCell(sale.Quantity + " " + sale.Product.Measure.Name, 1));
                     table.AddCell(CreateDataCell(sale.UnitPrice.ToString("n2"), 2));
-                    table.AddCell(CreateDataCell(sale.Location));
+                    table.AddCell(CreateDataCell(sale.Supermarket.Name));
                     table.AddCell(CreateDataCell(sale.TotalSum.ToString("n2"), 2));
                 }
 
-                var totalSumCellValue = string.Format("Total sum for {0}: ", saleByDate.SaleDate.ToString(DefaultDateFormat));
-                decimal dateTotal = saleByDate.Sales.Sum(s => s.TotalSum);
+                var totalSumCellValue = string.Format("Total sum for {0}: ", saleByDate.Key.ToString(DefaultDateFormat));
+                decimal dateTotal = saleByDate.Sum(s => s.TotalSum);
 
                 table.AddCell(CreateFooterCell(totalSumCellValue, colspan: WidthOfTable - 1));
                 table.AddCell(CreateFooterCell(dateTotal.ToString("n2"), isBold: true));
@@ -150,52 +147,6 @@
             cell.BackgroundColor = backgroundColor;
 
             return cell;
-        } 
-
-        private static IQueryable<SaleByDate> FindSalesByDate(DateTime startDate, DateTime endDate)
-        {
-            var sales = context.Sales
-                .Where(s => s.Date >= startDate && s.Date <= endDate)    
-                .GroupBy(s => s.Date,
-                         (key, val) => new SaleByDate
-                         {
-                             SaleDate = key,
-                             Sales = val.Select(s => new Sale()
-                             {
-                                 Product = s.Product.Name,
-                                 Quantity = s.Quantity,
-                                 ProductMeasure = s.Product.Measure.Name,
-                                 UnitPrice = s.UnitPrice,
-                                 Location = s.Supermarket.Name,
-                                 TotalSum = s.TotalSum,
-                                 Date = s.Date
-                             })
-                         });
-
-            return sales;
-        }
-
-        private class SaleByDate
-        {
-            public DateTime SaleDate { get; set; }
-            public IEnumerable<Sale> Sales { get; set; }
-        }
-
-        private class Sale
-        {
-            public string Product { get; set; }
-
-            public int Quantity { get; set; }
-
-            public decimal UnitPrice { get; set; }
-
-            public string ProductMeasure { get; set; }
-
-            public string Location { get; set; }
-
-            public decimal TotalSum { get; set; }
-
-            public DateTime Date { get; set; }
         }
     }
 }

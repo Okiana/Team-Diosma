@@ -33,7 +33,7 @@
                         break;
                     case 2: Engine.ZipExcelReportsToMsSql();
                         break;
-                    case 3: Engine.GenerateFinancialReport();
+                    case 3: Engine.GeneratePdfSalesReport();
                         break;
                     case 4: Engine.XMLExport();
                         break;

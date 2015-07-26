@@ -106,7 +106,7 @@
             Console.WriteLine(SeparatorLiner);
         }
 
-        public static void GenerateFinancialReport()
+        public static void GeneratePdfSalesReport()
         {
             DateTime[] timePeriod = TakeUserInput();
             DateTime startDate = timePeriod[0];

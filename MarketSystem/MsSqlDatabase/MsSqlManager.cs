@@ -1,5 +1,6 @@
 ﻿namespace MarketSystem.MsSqlDatabase
 {
+    using System;
     using System.Collections.Generic;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
@@ -10,34 +11,49 @@
     {
         public static void TransferData(MarketData marketData)
         {
-            var context = new SqlMarketContext();
+            using (var context = new SqlMarketContext())
+            {
+                TransferTowns(marketData.Towns, context);
+                TransferSupermarkets(marketData.Supermarkets, context);
+                TransferProductsTypes(marketData.ProductsTypes, context);
+                TransferVendors(marketData.Vendors, context);
+                TransferMeasures(marketData.Measures, context);
+                TransferProducts(marketData.Products, context);
+                TransferSalesReports(marketData.SalesReports, context);
+                TransferVendorExpenses(marketData.VendorExpenses, context);
 
-            TransferTowns(marketData.Towns, context);
-            TransferSupermarkets(marketData.Supermarkets, context);
-            TransferProductsTypes(marketData.ProductsTypes, context);
-            TransferVendors(marketData.Vendors, context);
-            TransferMeasures(marketData.Measures, context);
-            TransferProducts(marketData.Products, context);
-            TransferSalesReports(marketData.SalesReports, context);
-            TransferVendorExpenses(marketData.VendorExpenses, context);
-
-            context.SaveChanges();
+                context.SaveChanges();
+            }
         }
 
         public MarketData GetData()
         {
+            using (var context = new SqlMarketContext())
+            {
+                this.GetTowns(context.Towns);
+                this.GetSupermarkets(context.Supermarkets);
+                this.GetMeasures(context.Measures);
+                this.GetProductsTypes(context.ProductsTypes);
+                this.GetVendors(context.Vendors);
+                this.GetProducts(context.Products);
+                this.GetSales(context.Sales);
+                this.GetVendorExpenses(context.VendorExpenses);
+
+                return this;
+            }
+        }
+
+        public static IEnumerable<IGrouping<DateTime, Sale>> FindSalesByDateRange(DateTime startDate, DateTime endDate)
+        {
             var context = new SqlMarketContext();
 
-            this.GetTowns(context.Towns);
-            this.GetSupermarkets(context.Supermarkets);
-            this.GetMeasures(context.Measures);
-            this.GetProductsTypes(context.ProductsTypes);
-            this.GetVendors(context.Vendors);
-            this.GetProducts(context.Products);
-            this.GetSales(context.Sales);
-            this.GetVendorExpenses(context.VendorExpenses);
+            var sales = context.Sales
+            .Where(s => s.Date >= startDate && s.Date <= endDate)
+            .Include(s => s.Product.Measure)
+            .Include(s => s.Supermarket)
+            .GroupBy(s => s.Date);
 
-            return this;
+            return sales;
         }
 
         private void GetTowns(IQueryable<Town> towns)
