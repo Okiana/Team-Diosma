@@ -60,6 +60,7 @@
     <Compile Include="ProductType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sale.cs" />
+    <Compile Include="SaleReport.cs" />
     <Compile Include="Supermarket.cs" />
     <Compile Include="Town.cs" />
     <Compile Include="Vendor.cs" />

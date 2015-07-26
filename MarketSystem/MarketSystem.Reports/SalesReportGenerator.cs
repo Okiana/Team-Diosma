@@ -19,7 +19,7 @@
 
         public static string ReportSalesByDate(DateTime startDate, DateTime endDate)
         {
-            var sales = MsSqlManager.FindSalesByDate(startDate, endDate);
+            var sales = MsSqlManager.FindSalesByDateRange(startDate, endDate);
             var fileName = string.Format("SalesReport_{0}_to_{1}.pdf", startDate.ToString(DefaultDateFormat), endDate.ToString(DefaultDateFormat));
 
             CreatePdfReport(sales, fileName, startDate, endDate);
@@ -27,7 +27,7 @@
             return ReportDirectoryPath + fileName;
         }
 
-        private static void CreatePdfReport(IEnumerable<IGrouping<DateTime, Sale>> salesByDate, string fileName, DateTime startDate, DateTime endDate)
+        private static void CreatePdfReport(IQueryable<IGrouping<DateTime, SaleReport>> salesByDate, string fileName, DateTime startDate, DateTime endDate)
         {
             if (!Directory.Exists(ReportDirectoryPath))
             {
@@ -64,15 +64,15 @@
 
                 foreach (var sale in saleByDate)
                 {
-                    table.AddCell(CreateDataCell(sale.Product.Name));
-                    table.AddCell(CreateDataCell(sale.Quantity + " " + sale.Product.Measure.Name, 1));
+                    table.AddCell(CreateDataCell(sale.Product));
+                    table.AddCell(CreateDataCell("" + sale.Quantity + " " + sale.ProductType, 1));
                     table.AddCell(CreateDataCell(sale.UnitPrice.ToString("n2"), 2));
-                    table.AddCell(CreateDataCell(sale.Supermarket.Name));
-                    table.AddCell(CreateDataCell(sale.TotalSum.ToString("n2"), 2));
+                    table.AddCell(CreateDataCell(sale.Location));
+                    table.AddCell(CreateDataCell(sale.Sum.ToString("n2"), 2));
                 }
 
                 var totalSumCellValue = string.Format("Total sum for {0}: ", saleByDate.Key.ToString(DefaultDateFormat));
-                decimal dateTotal = saleByDate.Sum(s => s.TotalSum);
+                decimal dateTotal = saleByDate.Sum(s => s.Sum);
 
                 table.AddCell(CreateFooterCell(totalSumCellValue, colspan: WidthOfTable - 1));
                 table.AddCell(CreateFooterCell(dateTotal.ToString("n2"), isBold: true));

@@ -43,15 +43,23 @@
             }
         }
 
-        public static IEnumerable<IGrouping<DateTime, Sale>> FindSalesByDateRange(DateTime startDate, DateTime endDate)
+        public static IQueryable<IGrouping<DateTime, SaleReport>> FindSalesByDateRange(DateTime startDate, DateTime endDate)
         {
             var context = new SqlMarketContext();
 
             var sales = context.Sales
-            .Where(s => s.Date >= startDate && s.Date <= endDate)
-            .Include(s => s.Product.Measure)
-            .Include(s => s.Supermarket)
-            .GroupBy(s => s.Date);
+                .Where(s => s.Date >= startDate && s.Date <= endDate)
+                .Select(s => new SaleReport
+                {
+                    Product = s.Product.Name,
+                    Quantity = s.Quantity,
+                    ProductType = s.Product.ProductType.Name,
+                    UnitPrice = s.UnitPrice,
+                    Location = s.Supermarket.Name,
+                    Sum = s.TotalSum,
+                    Date = s.Date
+                })
+                .GroupBy(s => s.Date);
 
             return sales;
         }
