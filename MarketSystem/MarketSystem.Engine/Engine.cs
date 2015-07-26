@@ -8,6 +8,7 @@
     using MarketSystem.OracleDatabase;
     using MarketSystem.XmlExpensesImport;
     using MarketSystem.XMLReportByVedor;
+    using Reports;
     using ZipExtractor;
 
     public static class Engine
@@ -103,6 +104,51 @@
 
             Console.WriteLine("Data transferred.");
             Console.WriteLine(SeparatorLiner);
+        }
+
+        public static void GenerateFinancialReport()
+        {
+            DateTime[] timePeriod = TakeUserInput();
+            DateTime startDate = timePeriod[0];
+            DateTime endDate = timePeriod[1];
+            
+            Console.WriteLine(SeparatorLiner);
+            Console.WriteLine("Generating Report...");
+            var reportPath = SalesReportGenerator.ReportSalesByDate(startDate, endDate);
+            Console.WriteLine("Report path: {0}", Path.GetFullPath(reportPath));
+            Console.WriteLine(SeparatorLiner);
+        }
+
+        private static DateTime[] TakeUserInput()
+        {
+            while (true)
+            {
+                Console.WriteLine("Please enter start and end date in format dd.mm.yyyy" +
+                                  " separated by space:");
+
+                string[] userInput = Console.ReadLine().Split(' ');
+
+                DateTime[] dates = new DateTime[2];
+
+                if (userInput.Length == 2 &&
+                    DateTime.TryParseExact(
+                        userInput[0],
+                        "dd.MM.yyyy",
+                        CultureInfo.InvariantCulture,
+                        DateTimeStyles.None,
+                        out dates[0]) &&
+                    DateTime.TryParseExact(
+                        userInput[1],
+                        "dd.MM.yyyy",
+                        CultureInfo.InvariantCulture,
+                        DateTimeStyles.None,
+                        out dates[1]))
+                {
+                    return dates;
+                }
+
+                Console.WriteLine("Invalid input. Please try again.");
+            }
         }
     }
 }

@@ -12,6 +12,7 @@
             const string Menu = "Menu:\n" +
                     "1. Replicate data from Oracle Database into MsSql Database\n" +
                     "2. Load Zip Excel Reports to MsSql Database\n" +
+                    "3. Generate Pdf Sales report\n" +
                     "4. Generate XML Sales by Vendor from given date range\n" +
                     "6. Load Xml Vendors Expenses Report into MsSql Database\n" +
                     "7. Load data from MsSql to MySql\n" +
@@ -31,6 +32,8 @@
                     case 1: Engine.OracleToMsSqlTransfer();
                         break;
                     case 2: Engine.ZipExcelReportsToMsSql();
+                        break;
+                    case 3: Engine.GenerateFinancialReport();
                         break;
                     case 4: Engine.XMLExport();
                         break;

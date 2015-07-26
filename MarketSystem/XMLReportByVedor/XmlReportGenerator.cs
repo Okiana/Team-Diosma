@@ -16,7 +16,6 @@
             using (var context = new SqlMarketContext())
             {
                 var doc = new XDocument();
-
                 var rootNode = new XElement("sales");
 
                 var vendors =

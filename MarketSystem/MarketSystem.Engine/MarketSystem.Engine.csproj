@@ -65,6 +65,10 @@
       <Project>{fad5fdbf-d2a6-4b59-ba8f-9c6dee5da042}</Project>
       <Name>MarketSystem.Models</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MarketSystem.Reports\MarketSystem.Reports.csproj">
+      <Project>{0b874b33-d49d-4dae-b7c5-d25dffba8ef1}</Project>
+      <Name>MarketSystem.Reports</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MsSqlDatabase\MsSqlDatabase.csproj">
       <Project>{bd7654a1-22c4-40f4-9ac4-ce151c0897c9}</Project>
       <Name>MsSqlDatabase</Name>

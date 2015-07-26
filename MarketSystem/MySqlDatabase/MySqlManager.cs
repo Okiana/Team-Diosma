@@ -23,6 +23,18 @@
             context.SaveChanges();
         }
 
+        public static void GetVendorResults()
+        {
+            var context = new MySqlContext();
+
+            //var vendorsReport =
+            //    from v in context.vendors
+            //    join s in context.sales on v.id equals s.product.vendor_id into sa
+            //    group v.name 
+            //    select 
+                
+        }
+
         private static void TransferTowns(IEnumerable<Town> towns, MySqlContext context)
         {
             towns.ToList()
