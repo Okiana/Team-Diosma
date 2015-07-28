@@ -18,8 +18,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{45D52B
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZipExtractor", "ZipExtractor\ZipExtractor.csproj", "{11FC2072-886C-4F6D-B9B6-FE341CF27DE5}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarketSystem.Engine", "MarketSystem.Engine\MarketSystem.Engine.csproj", "{4AB5135D-CC5B-4821-8EE7-0468BF95B5A9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XmlExpensesImport", "XmlExpensesImport\XmlExpensesImport.csproj", "{268A9315-A4E2-44D1-A859-75ED9A58DA32}"
@@ -52,10 +50,6 @@ Global
 		{7517BCF0-0B1D-44F1-AF58-F8FFE51976A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7517BCF0-0B1D-44F1-AF58-F8FFE51976A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7517BCF0-0B1D-44F1-AF58-F8FFE51976A2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{11FC2072-886C-4F6D-B9B6-FE341CF27DE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{11FC2072-886C-4F6D-B9B6-FE341CF27DE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{11FC2072-886C-4F6D-B9B6-FE341CF27DE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{11FC2072-886C-4F6D-B9B6-FE341CF27DE5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4AB5135D-CC5B-4821-8EE7-0468BF95B5A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4AB5135D-CC5B-4821-8EE7-0468BF95B5A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4AB5135D-CC5B-4821-8EE7-0468BF95B5A9}.Release|Any CPU.ActiveCfg = Release|Any CPU

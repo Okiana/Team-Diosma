@@ -107,10 +107,6 @@
       <Project>{7517bcf0-0b1d-44f1-af58-f8ffe51976a2}</Project>
       <Name>OracleDatabase</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ZipExtractor\ZipExtractor.csproj">
-      <Project>{11fc2072-886c-4f6d-b9b6-fe341cf27de5}</Project>
-      <Name>ZipExtractor</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

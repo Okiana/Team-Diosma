@@ -9,13 +9,12 @@
     using MarketSystem.XmlExpensesImport;
     using MarketSystem.XMLReportByVedor;
     using Reports;
-    using ZipExtractor;
 
     public static class Engine
     {
         private const string SalesImportPath = @"..\..\..\..\Import\Sample-Sales-Reports.zip";
         private const string ExpensesImportPath = @"..\..\..\..\Import\Sample-Vendor-Expenses.xml";
-        private const string XmlResultFileName = @"..\..\..\..\Export\";
+        private const string ExportPath = @"..\..\..\..\Export\";
 
         private const char SeparatorSymbol = '-';
         private const int SeparatorLength = 50;
@@ -43,7 +42,7 @@
 
             Console.WriteLine(SeparatorLiner);
             Console.WriteLine("Extracting data from reports...\n");
-            var zipExtractor = new ZipExtractor(SalesImportPath, sqlContext);
+            var zipExtractor = new ExcelSalesExtractor(SalesImportPath, sqlContext);
             var data = zipExtractor.ExtractData();
 
             Console.WriteLine("\nSending data to SQL Server...");
@@ -58,9 +57,9 @@
             /*DateTime startDate = new DateTime(2014, 07, 20);
             DateTime endDate = new DateTime(2014, 07, 22);*/
 
-            if (!Directory.Exists(XmlResultFileName))
+            if (!Directory.Exists(ExportPath))
             {
-                Directory.CreateDirectory(XmlResultFileName);
+                Directory.CreateDirectory(ExportPath);
             }
             
             Console.WriteLine(SeparatorLiner);
@@ -71,7 +70,7 @@
             Console.WriteLine(SeparatorLiner);
 
             Console.WriteLine("Generating report from sales to xml...");
-            var path = XmlReportGenerator.GenerateXmlReport(startDate, endDate, XmlResultFileName);
+            var path = XmlReportGenerator.GenerateXmlReport(startDate, endDate, ExportPath);
             Console.WriteLine("The report is done!\n Path: {0}", Path.GetFullPath(path));
             Console.WriteLine(SeparatorLiner);
         }
@@ -116,6 +115,26 @@
             Console.WriteLine("Generating Report...");
             var reportPath = SalesReportGenerator.ReportSalesByDate(startDate, endDate);
             Console.WriteLine("Report path: {0}", Path.GetFullPath(reportPath));
+            Console.WriteLine(SeparatorLiner);
+        }
+
+        public static void GenerateFinancialReport()
+        {
+            if (!Directory.Exists(ExportPath))
+            {
+                Directory.CreateDirectory(ExportPath);
+            }
+
+            Console.WriteLine(SeparatorLiner);
+
+            Console.WriteLine("Extracting Report data...");
+            var mysqlManager = new MySqlManager();
+            var data = mysqlManager.GetVendorResults();
+
+            Console.WriteLine("Generating Report...");
+            var reportPath = FinancialReportGenerator.GenerateFinancialReport(data, ExportPath);
+
+            Console.WriteLine("Report path: {0}", reportPath);
             Console.WriteLine(SeparatorLiner);
         }
 

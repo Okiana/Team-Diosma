@@ -89,10 +89,6 @@
       <Project>{29f30024-9f95-4bc8-a622-577a11c3f395}</Project>
       <Name>XMLReportByVedor</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ZipExtractor\ZipExtractor.csproj">
-      <Project>{11fc2072-886c-4f6d-b9b6-fe341cf27de5}</Project>
-      <Name>ZipExtractor</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

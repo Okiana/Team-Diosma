@@ -1,11 +1,12 @@
 ﻿namespace MarketSystem.MySqlDatabase
 {
+    using System;
     using System.Collections.Generic;
     using System.Data.Entity.Migrations;
     using System.Linq;
     using Models;
 
-    public class MySqlManager
+    public class MySqlManager : MarketData
     {
         public static void TransferData(MarketData marketData)
         {
@@ -23,16 +24,28 @@
             context.SaveChanges();
         }
 
-        public static void GetVendorResults()
+        public IEnumerable<FinancialReport> GetVendorResults()
         {
             var context = new MySqlContext();
 
-            //var vendorsReport =
-            //    from v in context.vendors
-            //    join s in context.sales on v.id equals s.product.vendor_id into sa
-            //    group v.name 
-            //    select 
-                
+            var vendorsReport =
+                (from v in context.vendors
+                join s in context.sales on v.id equals s.product.vendor_id into incomes
+                join ve in context.vendor_expenses on v.id equals ve.vendor_id into expenses
+                select new
+                {
+                    Vendor = v.name,
+                    Incomes = incomes,
+                    Expenses = expenses
+                }).ToList()
+                .GroupBy(v => v.Vendor, (k, v) => new FinancialReport
+                {
+                    Vendor = k,
+                    Incomes = v.Sum(i => i.Incomes.Sum(s => s.total_sum)),
+                    Expenses = v.Sum(e => e.Expenses.Sum(s => s.expenses))
+                });
+            
+            return vendorsReport;
         }
 
         private static void TransferTowns(IEnumerable<Town> towns, MySqlContext context)

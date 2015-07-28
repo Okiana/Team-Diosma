@@ -16,6 +16,7 @@
                     "4. Generate XML Sales by Vendor from given date range\n" +
                     "6. Load Xml Vendors Expenses Report into MsSql Database\n" +
                     "7. Load data from MsSql to MySql\n" +
+                    "8. Generate financial report\n" +
                     "0. Exit\n";
 
             try
@@ -40,6 +41,8 @@
                     case 6: Engine.XmlExpensesReportToMsSql();
                         break;
                     case 7: Engine.SqlServerToMySqlTransfer();
+                        break;
+                    case 8: Engine.GenerateFinancialReport();
                         break;
                     default: throw new InvalidOperationException("Invalid operation.");
                 }

@@ -54,6 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entity.cs" />
+    <Compile Include="FinancialReport.cs" />
     <Compile Include="MarketData.cs" />
     <Compile Include="Measure.cs" />
     <Compile Include="Product.cs" />

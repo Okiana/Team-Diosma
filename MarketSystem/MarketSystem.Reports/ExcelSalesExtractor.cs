@@ -1,16 +1,16 @@
-﻿namespace ZipExtractor
+﻿namespace MarketSystem.Reports
 {
     using System;
     using System.IO;
     using System.Linq;
     using GemBox.Spreadsheet;
     using Ionic.Zip;
-    using MarketSystem.Models;
-    using MarketSystem.MsSqlDatabase;
+    using Models;
+    using MsSqlDatabase;
 
-    public class ZipExtractor : MarketData
+    public class ExcelSalesExtractor : MarketData
     {
-        public ZipExtractor(string archivePath, SqlMarketContext context)
+        public ExcelSalesExtractor(string archivePath, SqlMarketContext context)
         {
             this.ArchivePath = archivePath;
             this.SqlMarketContext = context;
