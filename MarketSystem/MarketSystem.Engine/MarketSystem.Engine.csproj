@@ -81,14 +81,6 @@
       <Project>{7517bcf0-0b1d-44f1-af58-f8ffe51976a2}</Project>
       <Name>OracleDatabase</Name>
     </ProjectReference>
-    <ProjectReference Include="..\XmlExpensesImport\XmlExpensesImport.csproj">
-      <Project>{268a9315-a4e2-44d1-a859-75ed9a58da32}</Project>
-      <Name>XmlExpensesImport</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\XMLReportByVedor\XMLReportByVedor.csproj">
-      <Project>{29f30024-9f95-4bc8-a622-577a11c3f395}</Project>
-      <Name>XMLReportByVedor</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

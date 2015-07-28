@@ -1,7 +1,6 @@
 ﻿namespace MarketSystem.Reports
 {
     using System;
-    using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using iTextSharp.text;
@@ -65,7 +64,7 @@
                 foreach (var sale in saleByDate)
                 {
                     table.AddCell(CreateDataCell(sale.Product));
-                    table.AddCell(CreateDataCell("" + sale.Quantity + " " + sale.ProductType, 1));
+                    table.AddCell(CreateDataCell(string.Empty + sale.Quantity + " " + sale.ProductType, 1));
                     table.AddCell(CreateDataCell(sale.UnitPrice.ToString("n2"), 2));
                     table.AddCell(CreateDataCell(sale.Location));
                     table.AddCell(CreateDataCell(sale.Sum.ToString("n2"), 2));
