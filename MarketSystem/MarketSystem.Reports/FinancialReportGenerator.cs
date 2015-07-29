@@ -11,7 +11,6 @@
         private const string Filename = "financial-report.xlsx";
         private static readonly string[] HeaderValues = { "Vendor", "Incomes", "Expenses", "Total Taxes", "Financial Result"};
         
-
         public static string GenerateFinancialReport(IEnumerable<FinancialReport> reportData, string folderPath)
         {
             SpreadsheetInfo.SetLicense("FREE-LIMITED-KEY");
@@ -28,7 +27,7 @@
                 var vendor = financialReport.Vendor;
                 var incomes = financialReport.Incomes;
                 var expenses = financialReport.Expenses;
-                var totalTaxes = financialReport.TotalTaxes ?? 0;
+                var totalTaxes = financialReport.TotalTaxes;
                 var financialResult = incomes - expenses - totalTaxes;
                 
                 FillRowData(ws, row, vendor, incomes, expenses, totalTaxes, financialResult);
@@ -58,16 +57,16 @@
             ws.Cells[row, 0].Value = vendor;
             ws.Cells[row, 0].Style = CreateDataStyle(row);
             ws.Cells[row, 1].Value = incomes;
-            ws.Cells[row, 1].Style = CreateDataStyle(row);
+            ws.Cells[row, 1].Style = CreateDataStyle(row, isNumber: true);
             ws.Cells[row, 2].Value = expenses;
-            ws.Cells[row, 2].Style = CreateDataStyle(row);
+            ws.Cells[row, 2].Style = CreateDataStyle(row, isNumber: true);
             ws.Cells[row, 3].Value = totalTaxes;
-            ws.Cells[row, 3].Style = CreateDataStyle(row);
+            ws.Cells[row, 3].Style = CreateDataStyle(row, isNumber: true);
             ws.Cells[row, 4].Value = financialResult;
-            ws.Cells[row, 4].Style = CreateDataStyle(row, true);
+            ws.Cells[row, 4].Style = CreateDataStyle(row, isBold:true, isNumber: true);
         }
 
-        private static CellStyle CreateDataStyle(int row, bool isBold = false)
+        private static CellStyle CreateDataStyle(int row, bool isBold = false, bool isNumber = false)
         {
             CellStyle style = new CellStyle();
             
@@ -81,6 +80,11 @@
             if (isBold)
             {
                 style.Font.Weight = ExcelFont.BoldWeight;
+            }
+
+            if (isNumber)
+            {
+                style.NumberFormat = "#,##0.00";
             }
 
             return style;

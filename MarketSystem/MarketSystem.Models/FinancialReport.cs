@@ -8,6 +8,6 @@
 
         public decimal Expenses { get; set; }
 
-        public decimal? TotalTaxes { get; set; }
+        public decimal TotalTaxes { get; set; }
     }
 }

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.40629.0
+VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarketSystem.Models", "MarketSystem.Models\MarketSystem.Models.csproj", "{FAD5FDBF-D2A6-4B59-BA8F-9C6DEE5DA042}"
 EndProject
@@ -23,6 +23,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MySqlDatabase", "MySqlDatabase\MySqlDatabase.csproj", "{1A7D1DF4-489C-45F0-8562-43B544C2372A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarketSystem.Reports", "MarketSystem.Reports\MarketSystem.Reports.csproj", "{0B874B33-D49D-4DAE-B7C5-D25DFFBA8EF1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqLiteDatabase", "SqLiteDatabase\SqLiteDatabase.csproj", "{DE297AB1-4D0F-4F21-88B2-7C921C0082E1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -58,6 +60,10 @@ Global
 		{0B874B33-D49D-4DAE-B7C5-D25DFFBA8EF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0B874B33-D49D-4DAE-B7C5-D25DFFBA8EF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0B874B33-D49D-4DAE-B7C5-D25DFFBA8EF1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE297AB1-4D0F-4F21-88B2-7C921C0082E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE297AB1-4D0F-4F21-88B2-7C921C0082E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE297AB1-4D0F-4F21-88B2-7C921C0082E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE297AB1-4D0F-4F21-88B2-7C921C0082E1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

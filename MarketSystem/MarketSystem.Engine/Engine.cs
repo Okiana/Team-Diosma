@@ -8,6 +8,7 @@
     using MarketSystem.MySqlDatabase;
     using MarketSystem.OracleDatabase;
     using MarketSystem.Reports;
+    using SqLiteDatabase;
 
     public static class Engine
     {
@@ -136,7 +137,7 @@
             Console.WriteLine("Report path: {0}", reportPath);
             Console.WriteLine(SeparatorLiner);
         }
-
+        
         private static DateTime[] TakeUserInput()
         {
             while (true)

@@ -17,34 +17,38 @@
                     "6. Load Xml Vendors Expenses Report into MsSql Database\n" +
                     "7. Load data from MsSql to MySql\n" +
                     "8. Generate financial report\n" +
-                    "0. Exit\n";
-
+                    "9. Exit\n";
+            
             try
             {
                 Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+                var isFinished = false;
 
-                Console.WriteLine(Menu);
-                var menuChoise = int.Parse(Console.ReadLine());
-
-                switch (menuChoise)
+                while (!isFinished)
                 {
-                    case 0: 
-                        return;
-                    case 1: Engine.OracleToMsSqlTransfer();
-                        break;
-                    case 2: Engine.ZipExcelReportsToMsSql();
-                        break;
-                    case 3: Engine.GeneratePdfSalesReport();
-                        break;
-                    case 4: Engine.XMLExport();
-                        break;
-                    case 6: Engine.XmlExpensesReportToMsSql();
-                        break;
-                    case 7: Engine.SqlServerToMySqlTransfer();
-                        break;
-                    case 8: Engine.GenerateFinancialReport();
-                        break;
-                    default: throw new InvalidOperationException("Invalid operation.");
+                    Console.WriteLine(Menu);
+                    var menuChoise = int.Parse(Console.ReadLine());
+
+                    switch (menuChoise)
+                    {
+                        case 1: Engine.OracleToMsSqlTransfer();
+                            break;
+                        case 2: Engine.ZipExcelReportsToMsSql();
+                            break;
+                        case 3: Engine.GeneratePdfSalesReport();
+                            break;
+                        case 4: Engine.XMLExport();
+                            break;
+                        case 6: Engine.XmlExpensesReportToMsSql();
+                            break;
+                        case 7: Engine.SqlServerToMySqlTransfer();
+                            break;
+                        case 8: Engine.GenerateFinancialReport();
+                            break;
+                        case 9: isFinished = true;
+                            break;
+                        default: throw new InvalidOperationException("Invalid operation.");
+                    }
                 }
             }
             catch (Exception e)

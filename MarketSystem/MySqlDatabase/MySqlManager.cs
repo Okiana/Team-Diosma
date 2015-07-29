@@ -5,6 +5,7 @@
     using System.Data.Entity.Migrations;
     using System.Linq;
     using Models;
+    using SqLiteDatabase;
 
     public class MySqlManager : MarketData
     {
@@ -27,24 +28,59 @@
         public IEnumerable<FinancialReport> GetVendorResults()
         {
             var context = new MySqlContext();
+            var vendors = context.vendors.OrderBy(v => v.name).Select(v => v.name).ToList();
+            var vendorsReport = new HashSet<FinancialReport>();
 
-            var vendorsReport =
-                (from v in context.vendors
-                join s in context.sales on v.id equals s.product.vendor_id into incomes
-                join ve in context.vendor_expenses on v.id equals ve.vendor_id into expenses
-                select new
+            var vendorSales = context.sales
+                .Select(s => new
                 {
-                    Vendor = v.name,
-                    Incomes = incomes,
-                    Expenses = expenses
-                }).ToList()
-                .GroupBy(v => v.Vendor, (k, v) => new FinancialReport
+                    Vendor = s.product.vendor.name,
+                    Product = s.product.name,
+                    Sum = s.total_sum
+                }).ToList();
+
+            var vendorTaxes = vendorSales.Select(s => new
+                {
+                    s.Vendor,
+                    Tax = SqLiteManager.GetTaxByProduct(s.Product) * s.Sum
+                })
+                .GroupBy(v => v.Vendor, (k, v) => new
                 {
                     Vendor = k,
-                    Incomes = v.Sum(i => i.Incomes.Sum(s => s.total_sum)),
-                    Expenses = v.Sum(e => e.Expenses.Sum(s => s.expenses))
-                });
-            
+                    Taxes = v.Sum(t => t.Tax)
+                }).ToList();
+
+            var groupedSales = vendorSales
+                .GroupBy(s => s.Vendor, (k, v) => new
+                {
+                    Vendor = k,
+                    Incomes = v.Sum(a => a.Sum)
+                }).ToList();
+
+            var vendorExpenses = context.vendor_expenses
+                .GroupBy(e => e.vendor.name, (k, v) => new
+                {
+                    Vendor = k,
+                    Expenses = v.Sum(s => s.expenses)
+                })
+                .ToList();
+
+            foreach (var vendor in vendors)
+            {
+                var incomes = groupedSales.FirstOrDefault(v => v.Vendor == vendor);
+                var expenses = vendorExpenses.FirstOrDefault(v => v.Vendor == vendor);
+                var taxes = vendorTaxes.FirstOrDefault(v => v.Vendor == vendor);
+                var vendorReport = new FinancialReport
+                {
+                    Vendor = vendor,
+                    Incomes = incomes != null ? incomes.Incomes : 0M,
+                    Expenses = expenses != null ? expenses.Expenses : 0M,
+                    TotalTaxes = taxes != null ? taxes.Taxes : 0M
+                };
+
+                vendorsReport.Add(vendorReport);
+            }
+
             return vendorsReport;
         }
 
