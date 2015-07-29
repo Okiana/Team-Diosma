@@ -45,7 +45,8 @@
                             break;
                         case 8: Engine.GenerateFinancialReport();
                             break;
-                        case 9: isFinished = true;
+                        case 9: Engine.PrintGoodByeMessage();
+                            isFinished = true;
                             break;
                         default: throw new InvalidOperationException("Invalid operation.");
                     }

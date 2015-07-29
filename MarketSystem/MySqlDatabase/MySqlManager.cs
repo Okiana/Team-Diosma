@@ -29,59 +29,79 @@
         {
             var context = new MySqlContext();
             var vendors = context.vendors.OrderBy(v => v.name).Select(v => v.name).ToList();
+
+            var allSales = context.sales
+                .Select(s => new
+                    {
+                        Vendor = s.product.vendor.name,
+                        Product = s.product.name,
+                        Sum = s.total_sum
+                    })
+                .ToList();
+
+            var vendorsTaxes = allSales
+                .Select(s => new
+                    {
+                        s.Vendor,
+                        Tax = SqLiteManager.GetTaxByProduct(s.Product) * s.Sum
+                    })
+                .GroupBy(v => v.Vendor, (k, v) => new
+                    {
+                        Vendor = k,
+                        Taxes = v.Sum(t => t.Tax)
+                    })
+                .ToDictionary(t => t.Vendor, t=> t.Taxes);
+
+            var vendorsIncomes = allSales
+                .GroupBy(s => s.Vendor, (k, v) => new
+                    {
+                        Vendor = k,
+                        Incomes = v.Sum(a => a.Sum)
+                    })
+                .ToDictionary(t => t.Vendor, t => t.Incomes);
+
+            var vendorsExpenses = GetVendorsExpenses(context);
+
+            var vendorsReport = GenerateReportData(vendors, vendorsIncomes, vendorsExpenses, vendorsTaxes);
+
+            return vendorsReport;
+        }
+
+        private static HashSet<FinancialReport> GenerateReportData(
+            List<string> vendors,
+            Dictionary<string, decimal> vendorsIncomes,
+            Dictionary<string, decimal> vendorsExpenses,
+            Dictionary<string, decimal> vendorsTaxes)
+        {
             var vendorsReport = new HashSet<FinancialReport>();
 
-            var vendorSales = context.sales
-                .Select(s => new
+            foreach (var vendor in vendors)
+            {
+                var incomes = vendorsIncomes.FirstOrDefault(v => v.Key == vendor);
+                var expenses = vendorsExpenses.FirstOrDefault(v => v.Key == vendor);
+                var taxes = vendorsTaxes.FirstOrDefault(v => v.Key == vendor);
+                var vendorReport = new FinancialReport
                 {
-                    Vendor = s.product.vendor.name,
-                    Product = s.product.name,
-                    Sum = s.total_sum
-                }).ToList();
+                    Vendor = vendor,
+                    Incomes = incomes.Value,
+                    Expenses = expenses.Value,
+                    TotalTaxes = taxes.Value
+                };
 
-            var vendorTaxes = vendorSales.Select(s => new
-                {
-                    s.Vendor,
-                    Tax = SqLiteManager.GetTaxByProduct(s.Product) * s.Sum
-                })
-                .GroupBy(v => v.Vendor, (k, v) => new
-                {
-                    Vendor = k,
-                    Taxes = v.Sum(t => t.Tax)
-                }).ToList();
-
-            var groupedSales = vendorSales
-                .GroupBy(s => s.Vendor, (k, v) => new
-                {
-                    Vendor = k,
-                    Incomes = v.Sum(a => a.Sum)
-                }).ToList();
-
+                vendorsReport.Add(vendorReport);
+            }
+            return vendorsReport;
+        }
+        private static Dictionary<string, decimal> GetVendorsExpenses(MySqlContext context)
+        {
             var vendorExpenses = context.vendor_expenses
                 .GroupBy(e => e.vendor.name, (k, v) => new
                 {
                     Vendor = k,
                     Expenses = v.Sum(s => s.expenses)
                 })
-                .ToList();
-
-            foreach (var vendor in vendors)
-            {
-                var incomes = groupedSales.FirstOrDefault(v => v.Vendor == vendor);
-                var expenses = vendorExpenses.FirstOrDefault(v => v.Vendor == vendor);
-                var taxes = vendorTaxes.FirstOrDefault(v => v.Vendor == vendor);
-                var vendorReport = new FinancialReport
-                {
-                    Vendor = vendor,
-                    Incomes = incomes != null ? incomes.Incomes : 0M,
-                    Expenses = expenses != null ? expenses.Expenses : 0M,
-                    TotalTaxes = taxes != null ? taxes.Taxes : 0M
-                };
-
-                vendorsReport.Add(vendorReport);
-            }
-
-            return vendorsReport;
+                .ToDictionary(t => t.Vendor, t => t.Expenses);
+            return vendorExpenses;
         }
 
         private static void TransferTowns(IEnumerable<Town> towns, MySqlContext context)

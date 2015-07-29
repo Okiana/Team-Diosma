@@ -8,13 +8,12 @@
     using MarketSystem.MySqlDatabase;
     using MarketSystem.OracleDatabase;
     using MarketSystem.Reports;
-    using SqLiteDatabase;
 
     public static class Engine
     {
         private const string SalesImportPath = @"..\..\..\..\Import\Sample-Sales-Reports.zip";
         private const string ExpensesImportPath = @"..\..\..\..\Import\Sample-Vendor-Expenses.xml";
-        private const string ExportPath = @"..\..\..\..\Export\";
+        private const string ExportDirectory = @"..\..\..\..\Export\";
 
         private const char SeparatorSymbol = '-';
         private const int SeparatorLength = 50;
@@ -54,23 +53,17 @@
 
         public static void XMLExport()
         {
-            /*DateTime startDate = new DateTime(2014, 07, 20);
-            DateTime endDate = new DateTime(2014, 07, 22);*/
-
-            if (!Directory.Exists(ExportPath))
-            {
-                Directory.CreateDirectory(ExportPath);
-            }
+            CreateNonExistingDirectory(ExportDirectory);
             
             Console.WriteLine(SeparatorLiner);
             Console.WriteLine("Enter start date in format [yyyy.mm.dd]:");
-            DateTime startDate = DateTime.ParseExact(Console.ReadLine(), "yyyy.MM.dd", CultureInfo.InvariantCulture);
+            DateTime startDate = ReadUserInputDate();
             Console.WriteLine("Enter end date in format [yyyy.mm.dd]: ");
-            DateTime endDate = DateTime.ParseExact(Console.ReadLine(), "yyyy.MM.dd", CultureInfo.InvariantCulture);
+            DateTime endDate = ReadUserInputDate();
             Console.WriteLine(SeparatorLiner);
 
             Console.WriteLine("Generating report from sales to xml...");
-            var path = XmlReportGenerator.GenerateXmlReport(startDate, endDate, ExportPath);
+            var path = XmlReportGenerator.GenerateXmlReport(startDate, endDate, ExportDirectory);
             Console.WriteLine("The report is done!\n Path: {0}", Path.GetFullPath(path));
             Console.WriteLine(SeparatorLiner);
         }
@@ -97,7 +90,7 @@
             Console.WriteLine("Extracting data from SQL server...");
             var sqlManager = new MsSqlManager();
 
-            Console.WriteLine("Sending data from MySQL server...");
+            Console.WriteLine("Sending data to MySQL server...");
             var data = sqlManager.GetData();
             MySqlManager.TransferData(data);
 
@@ -107,11 +100,12 @@
 
         public static void GeneratePdfSalesReport()
         {
-            DateTime[] timePeriod = TakeUserInput();
-            DateTime startDate = timePeriod[0];
-            DateTime endDate = timePeriod[1];
-            
             Console.WriteLine(SeparatorLiner);
+            Console.WriteLine("Enter start date in format [yyyy.mm.dd]:");
+            DateTime startDate = ReadUserInputDate();
+            Console.WriteLine("Enter end date in format [yyyy.mm.dd]: ");
+            DateTime endDate = ReadUserInputDate();
+            
             Console.WriteLine("Generating Report...");
             var reportPath = SalesReportGenerator.ReportSalesByDate(startDate, endDate);
             Console.WriteLine("Report path: {0}", Path.GetFullPath(reportPath));
@@ -120,10 +114,7 @@
 
         public static void GenerateFinancialReport()
         {
-            if (!Directory.Exists(ExportPath))
-            {
-                Directory.CreateDirectory(ExportPath);
-            }
+            CreateNonExistingDirectory(ExportDirectory);
 
             Console.WriteLine(SeparatorLiner);
 
@@ -132,41 +123,29 @@
             var data = mysqlManager.GetVendorResults();
 
             Console.WriteLine("Generating Report...");
-            var reportPath = FinancialReportGenerator.GenerateFinancialReport(data, ExportPath);
+            var reportPath = FinancialReportGenerator.GenerateFinancialReport(data, ExportDirectory);
 
             Console.WriteLine("Report path: {0}", reportPath);
             Console.WriteLine(SeparatorLiner);
         }
-        
-        private static DateTime[] TakeUserInput()
+
+        public static void PrintGoodByeMessage()
         {
-            while (true)
+            Console.WriteLine("Good bye!");
+        }
+
+        private static DateTime ReadUserInputDate()
+        {
+            var date = DateTime.ParseExact(Console.ReadLine().Trim(), "yyyy.MM.dd", CultureInfo.InvariantCulture);
+
+            return date;
+        }
+
+        private static void CreateNonExistingDirectory(string path)
+        {
+            if (!Directory.Exists(path))
             {
-                Console.WriteLine("Please enter start and end date in format dd.mm.yyyy" +
-                                  " separated by space:");
-
-                string[] userInput = Console.ReadLine().Split(' ');
-
-                DateTime[] dates = new DateTime[2];
-
-                if (userInput.Length == 2 &&
-                    DateTime.TryParseExact(
-                        userInput[0],
-                        "dd.MM.yyyy",
-                        CultureInfo.InvariantCulture,
-                        DateTimeStyles.None,
-                        out dates[0]) &&
-                    DateTime.TryParseExact(
-                        userInput[1],
-                        "dd.MM.yyyy",
-                        CultureInfo.InvariantCulture,
-                        DateTimeStyles.None,
-                        out dates[1]))
-                {
-                    return dates;
-                }
-
-                Console.WriteLine("Invalid input. Please try again.");
+                Directory.CreateDirectory(path);
             }
         }
     }
