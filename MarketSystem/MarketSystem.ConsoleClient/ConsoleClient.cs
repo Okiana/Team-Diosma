@@ -22,9 +22,9 @@
             try
             {
                 Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
-                var isFinished = false;
+                var showMenu = true;
 
-                while (!isFinished)
+                while (showMenu)
                 {
                     Console.WriteLine(Menu);
                     var menuChoise = int.Parse(Console.ReadLine());
@@ -46,7 +46,7 @@
                         case 8: Engine.GenerateFinancialReport();
                             break;
                         case 9: Engine.PrintGoodByeMessage();
-                            isFinished = true;
+                            showMenu = false;
                             break;
                         default: throw new InvalidOperationException("Invalid operation.");
                     }
