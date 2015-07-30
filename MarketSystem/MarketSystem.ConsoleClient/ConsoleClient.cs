@@ -14,18 +14,20 @@
                     "2. Load Zip Excel Reports to MsSql Database\n" +
                     "3. Generate Pdf Sales report\n" +
                     "4. Generate XML Sales by Vendor from given date range\n" +
+                    "5. Export Json report for product sales in Mongo Database\n" +
                     "6. Load Xml Vendors Expenses Report into MsSql Database\n" +
                     "7. Load data from MsSql to MySql\n" +
                     "8. Generate financial report\n" +
                     "9. Exit\n";
-            
-            try
-            {
-                Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
-                var showMenu = true;
 
-                while (showMenu)
+            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+            var showMenu = true;
+
+            while (showMenu)
+            {
+                try
                 {
+
                     Console.WriteLine(Menu);
                     var menuChoise = int.Parse(Console.ReadLine());
 
@@ -39,6 +41,8 @@
                             break;
                         case 4: Engine.XMLExport();
                             break;
+                        case 5: Engine.JsonReportsToMongoDb();
+                            break;
                         case 6: Engine.XmlExpensesReportToMsSql();
                             break;
                         case 7: Engine.SqlServerToMySqlTransfer();
@@ -51,11 +55,12 @@
                         default: throw new InvalidOperationException("Invalid operation.");
                     }
                 }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
             }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
+
         }
     }
 }

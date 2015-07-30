@@ -7,7 +7,7 @@
 
     public class XmlReportGenerator
     {
-        private const string ResultFileName = "result.xml";
+        private const string ResultFileName = "XMLVendorReport.xml";
 
         public static string GenerateXmlReport(DateTime startDate, DateTime endDate, string exportFolder)
         {

@@ -58,7 +58,7 @@
             Console.WriteLine(SeparatorLiner);
             Console.WriteLine("Enter start date in format [yyyy.mm.dd]:");
             DateTime startDate = ReadUserInputDate();
-            Console.WriteLine("Enter end date in format [yyyy.mm.dd]: ");
+            Console.WriteLine("Enter end date in format [yyyy.mm.dd]:");
             DateTime endDate = ReadUserInputDate();
             Console.WriteLine(SeparatorLiner);
 
@@ -82,6 +82,29 @@
 
             Console.WriteLine("Vendor expense report imported.");
             Console.WriteLine(SeparatorLiner);
+        }
+
+        public static void JsonReportsToMongoDb()
+        {
+            CreateNonExistingDirectory(ExportDirectory);
+
+            Console.WriteLine(SeparatorLiner);
+            Console.WriteLine("Enter start date in format [yyyy.mm.dd]:");
+            DateTime startDate = ReadUserInputDate();
+            Console.WriteLine("Enter end date in format [yyyy.mm.dd]:");
+            DateTime endDate = ReadUserInputDate();
+            Console.WriteLine(SeparatorLiner);
+
+            JsonProductReportToMongoDb.JsonProductSalses(startDate, endDate, ExportDirectory);
+
+            Console.WriteLine("Generating report for products sales to json...");
+            Console.WriteLine("The report is done!\n Path: {0}", Path.GetFullPath(ExportDirectory));
+            Console.WriteLine(SeparatorLiner);
+
+            Console.WriteLine("Importing reports into mongo database...");
+            JsonProductReportToMongoDb.ImportJsonToMongoDb();
+            Console.WriteLine(Path.GetFullPath(@"..\..\..\..\Mongodb\data"));
+            Console.WriteLine("Reports are imported in collection \"ProductsReports\" in database \"ProductsSales\"");
         }
 
         public static void SqlServerToMySqlTransfer()

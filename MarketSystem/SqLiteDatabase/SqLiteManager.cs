@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SqLiteDatabase
+﻿namespace SqLiteDatabase
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
     public class SqLiteManager
     {
         public static IEnumerable<MarketSystem.Models.TaxInformation> GetTaxes()
@@ -26,7 +23,6 @@ namespace SqLiteDatabase
 
         public static decimal GetTaxByProduct(string productName)
         {
-
             using (var context = new SqLiteEntities())
             {
                var tax = context.TaxInformations.FirstOrDefault(t => t.ProductName == productName);

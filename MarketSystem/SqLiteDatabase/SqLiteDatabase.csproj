@@ -87,7 +87,9 @@
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <EntityDeploy Include="SqLiteContext.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>SqLiteContext.Designer.cs</LastGenOutput>
