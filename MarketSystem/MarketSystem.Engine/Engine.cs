@@ -99,12 +99,12 @@
 
             Console.WriteLine("Generating report for products sales to json...");
             Console.WriteLine("The report is done!\n Path: {0}", Path.GetFullPath(ExportDirectory));
-            Console.WriteLine(SeparatorLiner);
-
+            
             Console.WriteLine("Importing reports into mongo database...");
             JsonProductReportToMongoDb.ImportJsonToMongoDb();
-            Console.WriteLine(Path.GetFullPath(@"..\..\..\..\Mongodb\data"));
+            //Console.WriteLine(Path.GetFullPath(@"..\..\..\..\Mongodb\data"));
             Console.WriteLine("Reports are imported in collection \"ProductsReports\" in database \"ProductsSales\"");
+            Console.WriteLine(SeparatorLiner);
         }
 
         public static void SqlServerToMySqlTransfer()

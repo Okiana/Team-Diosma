@@ -49,10 +49,14 @@
 
             foreach (var json in jsonFiles)
             {
-                Console.WriteLine();
-                var readJsonFile = File.ReadAllText(json);
-                var document = BsonDocument.Parse(readJsonFile);
-                collection.InsertOneAsync(document).Wait();
+                if (json.EndsWith(".json"))
+                {
+                    Console.WriteLine("Reading file: {0}", Path.GetFullPath(json));
+                    var readJsonFile = File.ReadAllText(json);
+                    var document = BsonDocument.Parse(readJsonFile);
+                    collection.InsertOneAsync(document).Wait();
+                }
+                
             }
         }
     }
